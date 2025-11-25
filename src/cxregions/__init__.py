@@ -1,7 +1,15 @@
 import juliacall
 import numpy as np
 jl = juliacall.newmodule("PyCR")
-# jl.seval('import Pkg; Pkg.add("ComplexRegions")')
+jl.seval('import Pkg')
+installed = False
+for v in jl.Pkg.dependencies().values():
+    if v.name == "ComplexRegions":
+        installed = True
+        break
+if not installed:
+    jl.seval('Pkg.add("ComplexRegions")')
+    
 jl.seval("using ComplexRegions, PythonCall")
 
 __all__ = ["Curve", "ClosedCurve", "Line", "Segment", "Circle", "Ray", "Arc", 
@@ -26,11 +34,11 @@ class JuliaCurve:
     def arclength(self):
         return jl.ComplexRegions.arclength(self.julia)
 
-    def tangent(self, t=0):
+    def tangent(self, t=0.):
         p = jl.ComplexRegions.tangent(self.julia, t)
         return np.complex128(p)
 
-    def unittangent(self, t=0):
+    def unittangent(self, t=0.):
         p = jl.ComplexRegions.unittangent(self.julia, t)
         return np.complex128(p)
     
@@ -139,21 +147,31 @@ class JuliaCurve:
             return z
 
 class Curve(JuliaCurve):
-    def __init__(self, point, tangent=None):
-        if tangent is not None:
-            self.julia = jl.ComplexRegions.Curve(point, tangent)
+    def __init__(self, point, tangent=None, domain=(0.0, 1.0)):
+        if isinstance(point, juliacall.AnyValue):  # type: ignore
+            if jl.isa(point, jl.ComplexRegions.Curve):
+                self.julia = point
+            else:
+                raise ValueError("Invalid argument to Curve constructor")
         else:
-            self.julia = jl.ComplexRegions.Curve(point)
+            self.julia = jl.ComplexRegions.Curve(point, tangent, domain[0], domain[1])
+
+    def inv(self):
+        c = JuliaCurve.inv(self)
+        return type(self)(c)
 
     def __repr__(self):
         return str("Curve")
 
 class ClosedCurve(Curve):
-    def __init__(self, point, tangent=None):
-        if tangent is not None:
-            self.julia = jl.ComplexRegions.ClosedCurve(point, tangent)
+    def __init__(self, point, tangent=None, domain=(0.0, 1.0)):
+        if isinstance(point, juliacall.AnyValue):  # type: ignore
+            if jl.isa(point, jl.ComplexRegions.ClosedCurve):
+                self.julia = point
+            else:
+                raise ValueError("Invalid argument to ClosedCurve constructor")
         else:
-            self.julia = jl.ComplexRegions.ClosedCurve(point)
+            self.julia = jl.ComplexRegions.ClosedCurve(point, tangent, domain[0], domain[1])
 
     def winding(self, z):
         return jl.ComplexRegions.winding(self.julia, z)
