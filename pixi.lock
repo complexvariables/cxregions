@@ -130,7 +130,7 @@ packages:
 - pypi: ./
   name: cxregions
   version: 0.1.0
-  sha256: e3e3cd224268ac885f72d36ef028202022e054e532d4473a29c2091645f65114
+  sha256: c0f38707bbe86e0894d65747ec54bf6b259349dc26adb81abb55e052b6c7b74a
   requires_dist:
   - juliacall>=0.9.30,<0.10
   requires_python: '>=3.11'
