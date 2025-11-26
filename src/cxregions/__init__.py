@@ -532,6 +532,10 @@ class CircularPolygon(ClosedPath):
     def side(self, k):
         return self.curve(k)
 
+    def __repr__(self):
+        N = len(self.sides())
+        return f"Circular polygon with {N} sides"
+
 class Polygon(ClosedPath):
     def __init__(self, arg):
         if isinstance(arg, juliacall.AnyValue):  # type: ignore
@@ -548,6 +552,10 @@ class Polygon(ClosedPath):
     
     def side(self, k):
         return self.curve(k)
+    
+    def __repr__(self):
+        N = len(self.sides())
+        return f"Polygon with {N} sides"
     
 class Rectangle(Polygon):
     def __init__(self, a, b=None):
