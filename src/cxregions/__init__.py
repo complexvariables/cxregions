@@ -509,14 +509,21 @@ class ClosedPath(Path):
         N = len(self.curves())
         return f"Closed path with {N} curves"
 
+def get_julia(p):
+    if isinstance(p, JuliaCurve) or isinstance(p, JuliaPath):
+        return p.julia
+    else:
+        return p
+
 class CircularPolygon(ClosedPath):
-    def __init__(self, pathvec):
-        if isinstance(pathvec, juliacall.AnyValue):  # type: ignore
-            if jl.isa(pathvec, jl.ComplexRegions.CircularPolygon):
-                self.julia = pathvec
-                return
-            else:
-                self.julia = jl.ComplexRegions.CircularPolygon(pathvec)
+    def __init__(self, arg):
+        if isinstance(arg, juliacall.AnyValue):  # type: ignore
+            if jl.isa(arg, jl.ComplexRegions.CircularPolygon):
+                self.julia = arg
+        else:
+            vec = juliacall.convert(jl.Vector,[get_julia(a) for a in arg])
+            self.julia = jl.ComplexRegions.CircularPolygon(vec)
+        
         self.path = ClosedPath(JuliaPath.get(self, "path"))
     
     def sides(self):
@@ -524,15 +531,16 @@ class CircularPolygon(ClosedPath):
     
     def side(self, k):
         return self.curve(k)
-    
+
 class Polygon(ClosedPath):
-    def __init__(self, pathvec):
-        if isinstance(pathvec, juliacall.AnyValue):  # type: ignore
-            if jl.isa(pathvec, jl.ComplexRegions.Polygon):
-                self.julia = pathvec
-                return
-            else:
-                self.julia = jl.ComplexRegions.Polygon(pathvec)
+    def __init__(self, arg):
+        if isinstance(arg, juliacall.AnyValue):  # type: ignore
+            if jl.isa(arg, jl.ComplexRegions.Polygon):
+                self.julia = arg
+        else:
+            vec = juliacall.convert(jl.Vector,[get_julia(a) for a in arg])
+            self.julia = jl.ComplexRegions.Polygon(vec)
+
         self.path = ClosedPath(JuliaPath.get(self, "path"))
     
     def sides(self):
