@@ -24,7 +24,7 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install pytest numpy
         python -m pip install "juliacall>=0.9.30,<0.10"
-        pip install -e .
+        python -m pip install .
     - name: Verify Julia setup
       run: |
         python -c "import juliacall; print('Julia setup successful')"
