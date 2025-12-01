@@ -14,7 +14,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.11", "3.12"]
+        python-version: ["3.11", "3.12", "3.13"]
 
     steps:
     - uses: actions/checkout@v3
@@ -38,14 +38,14 @@ jobs:
   publish:
     needs: test
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    if: github.event_name == 'push' && github.ref == 'refs/tags/v*'
     
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: "3.12"
+        python-version: "3.13"
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -53,16 +53,9 @@ jobs:
     - name: Set version from tag
       id: get_version
       run: |
-        if [[ $GITHUB_REF == refs/tags/v* ]]; then
-          VERSION=${GITHUB_REF#refs/tags/v}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Tagged version: $VERSION"
-        else
-          # For non-tag pushes, use setuptools_scm to generate version
-          VERSION=$(python -c "from setuptools_scm import get_version; print(get_version())")
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "Generated version: $VERSION"
-        fi
+        VERSION=${GITHUB_REF#refs/tags/v}
+        echo "VERSION=$VERSION" >> $GITHUB_ENV
+        echo "Tagged version: $VERSION"
     
     - name: Update version in pyproject.toml
       run: |
