@@ -3,7 +3,8 @@ import numpy as np
 from cxregions import (
     Circle, Line, Rectangle, Segment, unitcircle,
     Exterior1CRegion, Interior1CRegion, ExteriorRegion, InteriorConnectedRegion, Annulus,
-    between, interior, exterior, disk, quad, halfplane, 
+    between, interior, exterior, disk, quad, halfplane, upperhalfplane, lowerhalfplane,
+    lefthalfplane, righthalfplane
 )
 
 
@@ -170,6 +171,38 @@ class TestSpecialCases:
         assert not region.contains(0)  # inside first circle
         assert not region.contains(3)  # inside second circle
 
+class TestRegionBuilders:
+    def test_disk_builder(self):
+        d = disk(1j, 2)
+        assert isinstance(d, Interior1CRegion)
+        assert d.contains(0.5)
+        assert not d.contains(-1.5j)
+        
+    def test_quad_builder(self):
+        r = Rectangle(-1-2j, 3.)
+        q = quad(r)
+        assert isinstance(q, Interior1CRegion)
+        assert q.contains(0.5 - 0.5j)
+        assert not q.contains(1.5 + 0.5j)
+
+    def test_between_builder(self, small_circle, large_circle):
+        b = between(large_circle, small_circle)
+        assert isinstance(b, InteriorConnectedRegion)
+        assert b.contains(1)
+        assert not b.contains(0.25)
+        assert not b.contains(3)
+
+    def test_interior_builder(self, unit_circle):
+        i = interior(unit_circle)
+        assert isinstance(i, Interior1CRegion)
+        assert i.contains(0)
+        assert not i.contains(2)
+
+    def test_exterior_builder(self, unit_circle):
+        e = exterior(unit_circle)
+        assert isinstance(e, Exterior1CRegion)
+        assert e.contains(2)
+        assert not e.contains(0)
 
 class TestRegionOperations:
     def test_exterior_region_union(self):
@@ -190,24 +223,31 @@ class TestRegionOperations:
         # Should return a JuliaRegion base type
         assert hasattr(intersection_region, 'julia')
 
-# class TestHalfplanes:
-#     def test_halfplane_construction(self, horizontal_line):
-#         """Test halfplane construction from line."""
-#         hp = halfplane(horizontal_line)
-#         assert isinstance(hp, InteriorConnectedRegion)
-#         assert not hp.isfinite()
+class TestHalfplanes:
+    def test_halfplane_construction(self, horizontal_line):
+        """Test halfplane construction from line."""
+        hp = halfplane(horizontal_line)
+        assert isinstance(hp, Interior1CRegion)
+        assert not hp.isfinite()
         
-#     def test_halfplane_containment(self, horizontal_line):
-#         """Test point containment in halfplane."""
-#         hp = halfplane(horizontal_line)
-        
-#         # Point above line should be contained
-#         assert hp.contains(1 + 1j)
-        
-#         # Point below line should not be contained
-#         assert not hp.contains(1 - 1j)
+    def test_halfplane_containment(self, horizontal_line):
+        """Test point containment in halfplane."""
+        hp = halfplane(horizontal_line)
+        # Point above line should be contained
+        assert hp.contains(1 + 1j)
+        # Point below line should not be contained
+        assert not hp.contains(1 - 1j)
 
-#     assert isinstance(upperhalfplane, InteriorConnectedRegion)
+    def test_builtin_halfplanes(self):
+        """Test built-in halfplane regions."""
+        assert lowerhalfplane.contains(-1j)
+        assert not lowerhalfplane.contains(1j)
+        assert lefthalfplane.contains(-1)
+        assert not lefthalfplane.contains(1)
+        assert righthalfplane.contains(1)
+        assert not righthalfplane.contains(-1)
+        assert upperhalfplane.contains(1j)
+        assert not upperhalfplane.contains(-1j)
 
 if __name__ == "__main__":
     pytest.main([__file__])

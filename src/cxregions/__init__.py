@@ -15,8 +15,8 @@ jl.seval("using ComplexRegions, PythonCall")
 __all__ = ["jl", "Curve", "ClosedCurve", "Line", "Segment", "Circle", "Ray", "Arc", 
            "Path", "ClosedPath", "CircularPolygon", "Polygon", "Rectangle", "n_gon", "unitcircle",
            "Exterior1CRegion", "Interior1CRegion", "ExteriorRegion", "InteriorConnectedRegion",
-           "between", "interior", "exterior", "disk", "quad", "Annulus"]
-        #    "halfplane", "upperhalfplane",  "lowerhalfplane", "lefthalfplane", "righthalfplane"]
+           "between", "interior", "exterior", "disk", "quad", "Annulus",
+           "halfplane", "upperhalfplane",  "lowerhalfplane", "lefthalfplane", "righthalfplane"]
 
 class JuliaCurve:
     def __init__(self, julia_obj):
@@ -474,14 +474,14 @@ class JuliaPath:
 class Path(JuliaPath):
     def __init__(self, curves):
         if isinstance(curves, juliacall.AnyValue):  # type: ignore
-            if jl.isa(curves, jl.ComplexRegions.Path):
+            if jl.isa(curves, jl.ComplexRegions.AbstractPath):
                 self.julia = curves
             else:
                 raise ValueError("Invalid argument to Path constructor")
         else:
             self.julia = jl.ComplexRegions.Path([c.julia for c in np.atleast_1d(curves)])
         
-        self.curve = self.get("curve")
+        # self.curve = self.get("curve")
         
     def __repr__(self):
         N = len(self.curves())
@@ -490,7 +490,7 @@ class Path(JuliaPath):
 class ClosedPath(Path):
     def __init__(self, curves):
         if isinstance(curves, juliacall.AnyValue):  # type: ignore
-            if jl.isa(curves, jl.ComplexRegions.ClosedPath):
+            if jl.isa(curves, jl.ComplexRegions.AbstractClosedPath):
                 self.julia = curves
             else:
                 raise ValueError("Invalid argument to ClosedPath constructor")
@@ -499,7 +499,7 @@ class ClosedPath(Path):
         else:
             self.julia = jl.ComplexRegions.ClosedPath([c.julia for c in np.atleast_1d(curves)])
         
-        self.curve = self.get("curve")
+        # self.curve = self.get("curve")
 
     def winding(self, z):
         return jl.ComplexRegions.winding(self.julia, z)
@@ -582,9 +582,9 @@ class Rectangle(Polygon):
                 raise ValueError("Invalid argument to Rectangle constructor")
         else:
             if b is None:
-                self.julia = jl.ComplexRegions.Rectangle(a)
+                self.julia = jl.ComplexRegions.rectangle(a)
             else:
-                self.julia = jl.ComplexRegions.Rectangle(a, b)
+                self.julia = jl.ComplexRegions.rectangle(a, b)
         
         self.center = JuliaPath.get(self, "center")
         self.radii = JuliaPath.get(self, "radii")
@@ -747,10 +747,10 @@ def halfplane(l:Line):
     r = jl.ComplexRegions.halfplane(l.julia)
     return Interior1CRegion(r)
 
-# upperhalfplane = halfplane(Line(0.0, direction=1.0))
-# lowerhalfplane = halfplane(Line(0.0, direction=-1.0))
-# lefthalfplane = halfplane(Line(0.0, direction=1.0j))
-# righthalfplane = halfplane(Line(0.0, direction=-1.0j))
+upperhalfplane = halfplane(Line(0.0, direction=1.0))
+lowerhalfplane = halfplane(Line(0.0, direction=-1.0))
+lefthalfplane = halfplane(Line(0.0, direction=1.0j))
+righthalfplane = halfplane(Line(0.0, direction=-1.0j))
 
 class Annulus(InteriorConnectedRegion):
     def __init__(self, outer, inner, center=0j):
