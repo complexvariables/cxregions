@@ -12,9 +12,11 @@ if not installed:
     
 jl.seval("using ComplexRegions, PythonCall")
 
-__all__ = ["Curve", "ClosedCurve", "Line", "Segment", "Circle", "Ray", "Arc", 
+__all__ = ["jl", "Curve", "ClosedCurve", "Line", "Segment", "Circle", "Ray", "Arc", 
            "Path", "ClosedPath", "CircularPolygon", "Polygon", "Rectangle", "n_gon", "unitcircle",
-           "ExteriorRegion", "InteriorRegion"]
+           "Exterior1CRegion", "Interior1CRegion", "ExteriorRegion", "InteriorConnectedRegion",
+           "between", "interior", "exterior", "disk", "quad", "Annulus"]
+        #    "halfplane", "upperhalfplane",  "lowerhalfplane", "lefthalfplane", "righthalfplane"]
 
 class JuliaCurve:
     def __init__(self, julia_obj):
@@ -166,7 +168,7 @@ class Curve(JuliaCurve):
 class ClosedCurve(Curve):
     def __init__(self, point, tangent=None, domain=(0.0, 1.0)):
         if isinstance(point, juliacall.AnyValue):  # type: ignore
-            if jl.isa(point, jl.ComplexRegions.ClosedCurve):
+            if jl.isa(point, jl.ComplexRegions.AbstractClosedCurve):
                 self.julia = point
             else:
                 raise ValueError("Invalid argument to ClosedCurve constructor")
@@ -477,7 +479,7 @@ class Path(JuliaPath):
             else:
                 raise ValueError("Invalid argument to Path constructor")
         else:
-            self.julia = jl.ComplexRegions.Path([c.julia for c in curves])
+            self.julia = jl.ComplexRegions.Path([c.julia for c in np.atleast_1d(curves)])
         
         self.curve = self.get("curve")
         
@@ -495,7 +497,7 @@ class ClosedPath(Path):
         elif isinstance(curves, Path):
             self.julia = jl.ComplexRegions.ClosedPath(curves.julia)
         else:
-            self.julia = jl.ComplexRegions.ClosedPath([c.julia for c in curves])
+            self.julia = jl.ComplexRegions.ClosedPath([c.julia for c in np.atleast_1d(curves)])
         
         self.curve = self.get("curve")
 
@@ -508,6 +510,20 @@ class ClosedPath(Path):
     def __repr__(self):
         N = len(self.curves())
         return f"Closed path with {N} curves"
+
+def Jordan(c):
+    """Construct a Jordan curve from a ClosedPath object."""
+    if isinstance(c, ClosedPath) or isinstance(c, ClosedCurve):
+        return c
+    elif isinstance(c, juliacall.AnyValue):  # type: ignore
+        if jl.isa(c, jl.ComplexRegions.AbstractClosedPath):
+            return ClosedPath(c)
+        elif jl.isa(c, jl.ComplexRegions.AbstractClosedCurve):
+            return ClosedCurve(c)
+        else:
+            raise ValueError("Julia argument to Jordan not recognized as a closed path or closed curve")
+    else:
+        raise ValueError("Argument to Jordan not recognized as a closed path or closed curve")
 
 def get_julia(p):
     if isinstance(p, JuliaCurve) or isinstance(p, JuliaPath):
@@ -598,10 +614,6 @@ class JuliaRegion:
         else:
             getattr(jl.ComplexRegions, "in")(self.julia)
 
-    def boundary(self):
-        b = jl.ComplexRegions.boundary(self.julia)
-        return JuliaPath(b)
-    
     def innerboundary(self):
         b = jl.ComplexRegions.innerboundary(self.julia)
         if isinstance(b, juliacall.VectorValue):  # type: ignore
@@ -627,6 +639,24 @@ class JuliaRegion:
         r = jl.ComplexRegions.intersect(self.julia, other.julia)
         return JuliaRegion(r)
     
+class Exterior1CRegion(JuliaRegion):
+    def __init__(self, boundary):
+        if isinstance(boundary, juliacall.AnyValue):  # type: ignore
+            if jl.isa(boundary, jl.ComplexRegions.ExteriorSimplyConnectedRegion) :
+                self.julia = boundary
+            else:
+                raise ValueError("Invalid argument to Exterior1CRegion constructor")
+        else:
+            self.julia = jl.ComplexRegions.ExteriorSimplyConnectedRegion(boundary.julia)
+
+        self.boundary = Jordan(JuliaRegion.get(self, "boundary"))
+
+    def isfinite(self):
+        return self.boundary.isfinite()
+    
+    def __repr__(self):
+        return str(f"Exterior simply connected region")
+
 class ExteriorRegion(JuliaRegion):
     def __init__(self, inner):
         if isinstance(inner, juliacall.AnyValue):  # type: ignore
@@ -635,9 +665,11 @@ class ExteriorRegion(JuliaRegion):
             else:
                 raise ValueError("Invalid argument to ExteriorRegion constructor")
         else:
-            self.julia = jl.ComplexRegions.ExteriorRegion(inner)
+            innerb = juliacall.convert(jl.Vector, [get_julia(b) for b in inner])
+            self.julia = jl.ComplexRegions.ExteriorRegion(innerb)
+
         b = JuliaRegion.get(self, "inner")
-        self.inner = [ClosedPath(j) for j in b]
+        self.inner = [Jordan(j) for j in b]
 
     def isfinite(self):
         return False
@@ -645,17 +677,37 @@ class ExteriorRegion(JuliaRegion):
     def __repr__(self):
         return f"Exterior region with {len(self.inner)} inner boundaries"
     
-class InteriorRegion(JuliaRegion):
-    def __init__(self, inner):
-        if isinstance(inner, juliacall.AnyValue):  # type: ignore
-            if jl.isa(inner, jl.ComplexRegions.InteriorConnectedRegion):
-                self.julia = inner
+class Interior1CRegion(JuliaRegion):
+    def __init__(self, boundary):
+        if isinstance(boundary, juliacall.AnyValue):  # type: ignore
+            if jl.isa(boundary, jl.ComplexRegions.InteriorSimplyConnectedRegion) :
+                self.julia = boundary
             else:
-                raise ValueError("Invalid argument to ExteriorRegion constructor")
+                raise ValueError("Invalid argument to InteriorConnectedRegion constructor")
         else:
-            self.julia = jl.ComplexRegions.ExteriorRegion(inner)
+            self.julia = jl.ComplexRegions.InteriorSimplyConnectedRegion(boundary.julia)
+
+        self.boundary = Jordan(JuliaRegion.get(self, "boundary"))
+
+    def isfinite(self):
+        return self.boundary.isfinite()
+    
+    def __repr__(self):
+        return str(f"Interior simply connected region")
+
+class InteriorConnectedRegion(JuliaRegion):
+    def __init__(self, outer, inner=[]):
+        if isinstance(outer, juliacall.AnyValue):  # type: ignore
+            if jl.isa(outer, jl.ComplexRegions.InteriorConnectedRegion) :
+                self.julia = outer
+            else:
+                raise ValueError("Invalid argument to InteriorConnectedRegion constructor")
+        else:
+            innerb = juliacall.convert(jl.Vector, [get_julia(b) for b in inner])
+            self.julia = jl.ComplexRegions.InteriorRegion(outer.julia, innerb)
+
         b = JuliaRegion.get(self, "inner")
-        self.inner = [ClosedPath(j) for j in b]
+        self.inner = [Jordan(j) for j in b]
         self.outer = JuliaRegion.get(self, "outer")
 
     def isfinite(self):
@@ -663,17 +715,44 @@ class InteriorRegion(JuliaRegion):
     
     def __repr__(self):
         N = len(self.inner)
-        if N==0:
-            return f"Interior simply connected region"
-        else:
-            return f"Interior {N+1}-connnected region"
+        return f"Interior {N+1}-connnected region"
         
 def between(curve1, curve2):
     """Construct the region between two closed curves."""
     r = jl.ComplexRegions.between(curve1.julia, curve2.julia)
-    return InteriorRegion(r)
+    return InteriorConnectedRegion(r)
 
-class Annulus(InteriorRegion):
+def interior(curve):
+    """Construct the interior region of a closed curve."""
+    r = jl.ComplexRegions.interior(curve.julia)
+    return Interior1CRegion(r)
+
+def exterior(curve):
+    """Construct the exterior region of a closed curve."""
+    r = jl.ComplexRegions.exterior(curve.julia)
+    return Exterior1CRegion(r)
+
+def disk(center, radius):
+    """Construct a disk as an InteriorRegion."""
+    r = jl.ComplexRegions.disk(center, radius)
+    return Interior1CRegion(r)
+
+def quad(rect:Rectangle):
+    """Construct a quadrilateral region from a Rectangle."""
+    r = jl.ComplexRegions.quad(rect.julia)
+    return Interior1CRegion(r)
+
+def halfplane(l:Line):
+    """Construct a half-plane as an InteriorRegion from a Line."""
+    r = jl.ComplexRegions.halfplane(l.julia)
+    return Interior1CRegion(r)
+
+# upperhalfplane = halfplane(Line(0.0, direction=1.0))
+# lowerhalfplane = halfplane(Line(0.0, direction=-1.0))
+# lefthalfplane = halfplane(Line(0.0, direction=1.0j))
+# righthalfplane = halfplane(Line(0.0, direction=-1.0j))
+
+class Annulus(InteriorConnectedRegion):
     def __init__(self, outer, inner, center=0j):
         if isinstance(outer, juliacall.AnyValue):  # type: ignore
             if jl.isa(outer, jl.ComplexRegions.Annulus):
