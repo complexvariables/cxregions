@@ -403,8 +403,8 @@ packages:
   timestamp: 1761175499490
 - pypi: ./
   name: cxregions
-  version: 0.1.0
-  sha256: fe41d2096aab247219eb8d79d3f7a98b7d13a0e17a7d5f33f09f5621a28f6c57
+  version: 0.1.1
+  sha256: 29db73be981b7e98238b8d76c89a5713cfcb671d1208b77e6946ab9fdc14e609
   requires_dist:
   - juliacall>=0.9.30,<0.10
   requires_python: '>=3.11'
