@@ -134,7 +134,10 @@ class JuliaCurve:
     def intersect(self, other):
         z = jl.ComplexRegions.intersect(self.julia, other.julia)
         if isinstance(z, juliacall.VectorValue):  # type: ignore
-            return np.array(z)
+            if len(z) == 0:
+                return np.array([])
+            else:
+                return np.array(z)
         elif jl.isa(z.julia, jl.Circle):
             return Circle(z.julia)
         elif jl.isa(z.julia, jl.Arc):
