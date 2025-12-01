@@ -21,6 +21,8 @@ cxregions = { path = ".", editable = true }
 [tool.pixi.dependencies]
 numpy = ">=2.3.5,<3"
 pytest = ">=9.0.1,<10"
+hatch = ">=1.16.1,<2"
+twine = ">=6.2.0,<7"
 
 [tool.pixi.feature.test.tasks]
 test = "pytest"
