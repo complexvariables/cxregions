@@ -20,10 +20,10 @@ setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.11",
     install_requires=[
-        "numpy",  # Add other dependencies here
-        "juliacall"
+        "numpy>=1.23.5,<2",
+        "juliacall>=0.9.30,<0.10"
     ],
     include_package_data=True,
 )

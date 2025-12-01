@@ -1,6 +1,6 @@
 [project]
 authors = [{name = "Toby Driscoll", email = "driscoll@udel.edu"}]
-dependencies = ["juliacall>=0.9.30,<0.10" "numpy>=2.3.5,<3"]
+dependencies = ["juliacall>=0.9.30,<0.10", "numpy>=1.23.5,<2"]
 name = "cxregions"
 readme = "README.md"
 description = "A Python interface to the ComplexRegions.jl Julia package"
@@ -9,8 +9,8 @@ license-files = ["LICENSE"]
 classifiers=[
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
-    "Operating System :: OS Independent",
-    ],
+    "Operating System :: OS Independent"
+    ]
 requires-python = ">= 3.11"
 version = "0.1.2"
 
@@ -31,10 +31,10 @@ cxregions = { path = ".", editable = true }
 [tool.pixi.tasks]
 
 [tool.pixi.dependencies]
-numpy = ">=2.3.5,<3"
-pytest = ">=9.0.1,<10"
-hatch = ">=1.16.1,<2"
-twine = ">=6.2.0,<7"
+numpy = ">=1.23.5,<2"
+pytest = ">=7.0.1,<8"
+hatch = ">=1.6.1,<2"
+twine = ">=4.0.0,<5"
 
 [tool.pixi.feature.test.tasks]
 test = "pytest"
