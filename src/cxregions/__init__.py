@@ -582,9 +582,15 @@ class Rectangle(Polygon):
                 raise ValueError("Invalid argument to Rectangle constructor")
         else:
             if b is None:
+                # hopefully, a vector of vertices was given
                 self.julia = jl.ComplexRegions.rectangle(a)
             else:
-                self.julia = jl.ComplexRegions.rectangle(a, b)
+                if np.ndim(a) == 0 and np.ndim(b) > 0:
+                    # center and radii were given; use constructor
+                    self.julia = jl.ComplexRegions.Rectangle(a, b)
+                else:
+                    # opposite corners were given; use rectangle function
+                    self.julia = jl.ComplexRegions.rectangle(a, b)
         
         self.center = JuliaPath.get(self, "center")
         self.radii = JuliaPath.get(self, "radii")
