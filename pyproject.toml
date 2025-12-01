@@ -1,6 +1,6 @@
 [project]
 authors = [{name = "Toby Driscoll", email = "driscoll@udel.edu"}]
-dependencies = ["juliacall>=0.9.30,<0.10", "numpy>=1.23.5,<2"]
+dependencies = ["juliacall>=0.9.30,<0.10", "numpy>=2.1,<3"]
 name = "cxregions"
 readme = "README.md"
 description = "A Python interface to the ComplexRegions.jl Julia package"
@@ -31,10 +31,10 @@ cxregions = { path = ".", editable = true }
 [tool.pixi.tasks]
 
 [tool.pixi.dependencies]
-numpy = ">=1.23.5,<2"
-pytest = ">=7.0.1,<8"
-hatch = ">=1.6.1,<2"
-twine = ">=4.0.0,<5"
+numpy = ">=2.1,<3"
+pytest = ">=9.0.1,<10"
+hatch = ">=1.16,<2"
+twine = ">=6.0.0,<7"
 
 [tool.pixi.feature.test.tasks]
 test = "pytest"
