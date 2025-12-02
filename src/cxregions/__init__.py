@@ -18,10 +18,36 @@ __all__ = ["jl", "Curve", "ClosedCurve", "Line", "Segment", "Circle", "Ray", "Ar
            "between", "interior", "exterior", "disk", "quad", "Annulus",
            "halfplane", "upperhalfplane",  "lowerhalfplane", "lefthalfplane", "righthalfplane"]
 
+JLCR = jl.ComplexRegions
+
+def wrap_jl_curve(jul):
+    if not isinstance(jul, juliacall.AnyValue):  # type: ignore
+        raise ValueError("Argument to wrap_jl_curve is not a Julia object")
+    if jl.isa(jul, JLCR.AbstractCurve):
+        if jl.isa(jul, JLCR.Circle):
+            return Circle(jul)
+        elif jl.isa(jul, JLCR.Arc):
+            return Arc(jul)
+        elif jl.isa(jul, JLCR.Line):
+            return Line(jul)
+        elif jl.isa(jul, JLCR.Segment):
+            return Segment(jul)
+        elif jl.isa(jul, JLCR.Ray):
+            return Ray(jul)
+        elif jl.isa(jul, JLCR.AbstractClosedCurve):
+            return ClosedCurve(jul)
+        else:
+            return Curve(jul)
+    else:
+        raise ValueError(f"Julia type {jl.typeof(jul)} not recognized for wrapping")
+
+# classes named "Julia.*" wrap Julia objects and give native methods to access the object's methods, plus a get method to get fields
+# classes derived from these take their properties from the embedded Julia object, presenting them in a native type
+
 class JuliaCurve:
     def __init__(self, julia_obj):
         if isinstance(julia_obj, juliacall.AnyValue):  # type: ignore
-            if jl.isa(julia_obj, jl.ComplexRegions.AbstractCurve):
+            if jl.isa(julia_obj, JLCR.AbstractCurve):
                 self.julia = julia_obj
         else:
             raise ValueError("Invalid argument to Curve constructor")
@@ -30,66 +56,66 @@ class JuliaCurve:
         return jl.getproperty(self.julia, jl.Symbol(field))
 
     def point(self, t):
-        p = jl.ComplexRegions.point(self.julia, t)
+        p = JLCR.point(self.julia, t)
         return np.complex128(p)
 
     def arclength(self):
-        return jl.ComplexRegions.arclength(self.julia)
+        return JLCR.arclength(self.julia)
 
     def tangent(self, t=0.):
-        p = jl.ComplexRegions.tangent(self.julia, t)
+        p = JLCR.tangent(self.julia, t)
         return np.complex128(p)
 
     def unittangent(self, t=0.):
-        p = jl.ComplexRegions.unittangent(self.julia, t)
+        p = JLCR.unittangent(self.julia, t)
         return np.complex128(p)
     
     def normal(self, t):
-        p = jl.ComplexRegions.normal(self.julia, t)
+        p = JLCR.normal(self.julia, t)
         return np.complex128(p)
 
     def arg(self, z):
-        return jl.ComplexRegions.arg(self.julia, z)
+        return JLCR.arg(self.julia, z)
 
     def conj(self):
-        c = jl.ComplexRegions.conj(self.julia)
+        c = JLCR.conj(self.julia)
         return type(self)(c)
 
     def reverse(self):
-        c = jl.ComplexRegions.reverse(self.julia)
+        c = JLCR.reverse(self.julia)
         return type(self)(c)
     
     def isfinite(self):
-        return jl.ComplexRegions.isfinite(self.julia)
+        return JLCR.isfinite(self.julia)
     
     def ispositive(self):
-        return jl.ComplexRegions.ispositive(self.julia)
+        return JLCR.ispositive(self.julia)
 
     def isreal(self):
-        return jl.ComplexRegions.isreal(self.julia)
+        return JLCR.isreal(self.julia)
 
     def isapprox(self, other):
-        return jl.ComplexRegions.isapprox(self.julia, other.julia)
+        return JLCR.isapprox(self.julia, other.julia)
 
     def inv(self):
         # can't know the return type in general, so this must be wrapped by inheritors
-        c = jl.ComplexRegions.inv(self.julia)
+        c = JLCR.inv(self.julia)
         return c
 
     def isleft(self, z):
-        return jl.ComplexRegions.isleft(z, self.julia)
+        return JLCR.isleft(z, self.julia)
 
     def isright(self, z):
-        return jl.ComplexRegions.isright(z, self.julia)
+        return JLCR.isright(z, self.julia)
     
     def reflect(self, z):
-        return jl.ComplexRegions.reflect(z, self.julia)
+        return JLCR.reflect(z, self.julia)
 
     def closest(self, z):
-        return jl.ComplexRegions.closest(z, self.julia)
+        return JLCR.closest(z, self.julia)
 
     def dist(self, z):
-        return jl.ComplexRegions.dist(z, self.julia)
+        return JLCR.dist(z, self.julia)
     
     def __add__(self, other):
         julia_add = getattr(jl, "+")
@@ -132,34 +158,26 @@ class JuliaCurve:
         return type(self)(t)
 
     def intersect(self, other):
-        z = jl.ComplexRegions.intersect(self.julia, other.julia)
+        z = JLCR.intersect(self.julia, other.julia)
         if isinstance(z, juliacall.VectorValue):  # type: ignore
             if len(z) == 0:
                 return np.array([])
             else:
                 return np.array(z)
-        elif jl.isa(z.julia, jl.Circle):
-            return Circle(z.julia)
-        elif jl.isa(z.julia, jl.Arc):
-            return Arc(z.julia)
-        elif jl.isa(z.julia, jl.Line):
-            return Line(z.julia)
-        elif jl.isa(z.julia, jl.Segment):
-            return Segment(z.julia)
-        elif jl.isa(z.julia, jl.Ray):
-            return Ray(z.julia)
+        elif jl.isa(z, JLCR.AbstractCurve):
+            return wrap_jl_curve(z)
         else:
             return z
 
 class Curve(JuliaCurve):
     def __init__(self, point, tangent=None, domain=(0.0, 1.0)):
         if isinstance(point, juliacall.AnyValue):  # type: ignore
-            if jl.isa(point, jl.ComplexRegions.Curve):
+            if jl.isa(point, JLCR.Curve):
                 self.julia = point
             else:
                 raise ValueError("Invalid argument to Curve constructor")
         else:
-            self.julia = jl.ComplexRegions.Curve(point, tangent, domain[0], domain[1])
+            self.julia = JLCR.Curve(point, tangent, domain[0], domain[1])
 
     def inv(self):
         c = JuliaCurve.inv(self)
@@ -171,15 +189,15 @@ class Curve(JuliaCurve):
 class ClosedCurve(Curve):
     def __init__(self, point, tangent=None, domain=(0.0, 1.0)):
         if isinstance(point, juliacall.AnyValue):  # type: ignore
-            if jl.isa(point, jl.ComplexRegions.AbstractClosedCurve):
+            if jl.isa(point, JLCR.AbstractClosedCurve):
                 self.julia = point
             else:
                 raise ValueError("Invalid argument to ClosedCurve constructor")
         else:
-            self.julia = jl.ComplexRegions.ClosedCurve(point, tangent, domain[0], domain[1])
+            self.julia = JLCR.ClosedCurve(point, tangent, domain[0], domain[1])
 
     def winding(self, z):
-        return jl.ComplexRegions.winding(self.julia, z)
+        return JLCR.winding(self.julia, z)
 
     def __repr__(self):
         return str("Closed curve")
@@ -187,14 +205,14 @@ class ClosedCurve(Curve):
 class Line(Curve):
     def __init__(self, a, b=None, direction=None):
         if isinstance(a, juliacall.AnyValue): # type: ignore
-            if jl.isa(a, jl.ComplexRegions.Line):
+            if jl.isa(a, JLCR.Line):
                 self.julia = a
             else:
                 raise ValueError("Invalid argument to Line constructor")
         elif b is not None:
-            self.julia = jl.ComplexRegions.Line(a, b)
+            self.julia = JLCR.Line(a, b)
         else:
-            self.julia = jl.ComplexRegions.Line(a, direction=direction)
+            self.julia = JLCR.Line(a, direction=direction)
         self.base = JuliaCurve.get(self, "base")
         self.direction = JuliaCurve.get(self, "direction")
 
@@ -209,16 +227,16 @@ class Line(Curve):
 
     def inv(self):
         c = JuliaCurve.inv(self)
-        if jl.isa(c, jl.ComplexRegions.Circle):
+        if jl.isa(c, JLCR.Circle):
             return Circle(c)
         else:
             return Line(c)
 
     def slope(self):
-        return jl.ComplexRegions.slope(self.julia)
+        return JLCR.slope(self.julia)
 
     def angle(self):
-        return jl.ComplexRegions.angle(self.julia)
+        return JLCR.angle(self.julia)
     
     def __repr__(self):
         return f"Line through {self.point(0.5)} at angle {self.angle() / np.pi} * pi"
@@ -227,14 +245,14 @@ class Circle(ClosedCurve):
     def __init__(self, a, b=None, c=None, ccw=True):
         if b is None:
             if isinstance(a, juliacall.AnyValue): # type: ignore
-                if jl.isa(a, jl.ComplexRegions.Circle):
+                if jl.isa(a, JLCR.Circle):
                     self.julia = a
             else:
                 raise ValueError("Invalid argument to Circle constructor")
         elif c is None:
-            self.julia = jl.ComplexRegions.Circle(a, b, ccw)
+            self.julia = JLCR.Circle(a, b, ccw)
         else:
-            self.julia = jl.ComplexRegions.Circle(a, b, c)
+            self.julia = JLCR.Circle(a, b, c)
         
         self.radius = JuliaCurve.get(self, "radius")
         self.center = JuliaCurve.get(self, "center")
@@ -248,7 +266,7 @@ class Circle(ClosedCurve):
 
     def inv(self):
         c = JuliaCurve.inv(self)
-        if jl.isa(c, jl.ComplexRegions.Circle):
+        if jl.isa(c, JLCR.Circle):
             return Circle(c)
         else:
             return Line(c)
@@ -259,21 +277,21 @@ class Circle(ClosedCurve):
 class Segment(Curve):
     def __init__(self, a, b=None):
         if isinstance(a, juliacall.AnyValue):  # type: ignore
-            if jl.isa(a, jl.ComplexRegions.Segment):
+            if jl.isa(a, JLCR.Segment):
                 self.julia = a
             else:
                 raise ValueError("Invalid argument to Segment constructor")
         else:
-            self.julia = jl.ComplexRegions.Segment(a, b)
+            self.julia = JLCR.Segment(a, b)
         
         self.first = JuliaCurve.get(self, "za")
         self.last = JuliaCurve.get(self, "zb")
 
     def inv(self):
         c = JuliaCurve.inv(self)
-        if jl.isa(c, jl.ComplexRegions.Arc):
+        if jl.isa(c, JLCR.Arc):
             return Arc(c)
-        elif jl.isa(c, jl.ComplexRegions.Ray):
+        elif jl.isa(c, JLCR.Ray):
             return Ray(c)
         else:
             return Segment(c)
@@ -284,12 +302,12 @@ class Segment(Curve):
 class Ray(Curve):
     def __init__(self, base, angle=None):
         if isinstance(base, juliacall.AnyValue):  # type: ignore
-            if jl.isa(base, jl.ComplexRegions.Ray):
+            if jl.isa(base, JLCR.Ray):
                 self.julia = base
             else:
                 raise ValueError("Invalid argument to Ray constructor")
         else:
-            self.julia = jl.ComplexRegions.Ray(base, angle)
+            self.julia = JLCR.Ray(base, angle)
         self.base = JuliaCurve.get(self, "base")
         self.angle = JuliaCurve.get(self, "angle")
 
@@ -299,14 +317,14 @@ class Ray(Curve):
 class Arc(Curve):
     def __init__(self, a, b=None, c=None):
         if isinstance(a, juliacall.AnyValue):  # type: ignore
-            if jl.isa(a, jl.ComplexRegions.Arc):
+            if jl.isa(a, JLCR.Arc):
                 self.julia = a
-            elif jl.isa(a, jl.ComplexRegions.Circle):
-                self.julia = jl.ComplexRegions.Arc(a, b, c)
+            elif jl.isa(a, JLCR.Circle):
+                self.julia = JLCR.Arc(a, b, c)
             else:
                 raise ValueError("Invalid argument to Arc constructor")
         else:
-            self.julia = jl.ComplexRegions.Arc(a, b, c)
+            self.julia = JLCR.Arc(a, b, c)
         
         circ = JuliaCurve.get(self, "circle")
         try:
@@ -318,20 +336,38 @@ class Arc(Curve):
 
     def inv(self):
         c = JuliaCurve.inv(self)
-        if jl.isa(c, jl.ComplexRegions.Arc):
+        if jl.isa(c, JLCR.Arc):
             return Arc(c)
-        elif jl.isa(c, jl.ComplexRegions.Ray):
+        elif jl.isa(c, JLCR.Ray):
             return Ray(c)
         else:
             return Segment(c)
 
     def __repr__(self):
         return f"Arc: fraction {self.delta} of {self.circle} from {self.start}"
-    
+
+def wrap_jl_path(jul):
+    if not isinstance(jul, juliacall.AnyValue):  # type: ignore
+        raise ValueError("Argument to wrap_jl_path is not a Julia object")
+    if jl.isa(jul, JLCR.AbstractPath):
+        if jl.isa(jul, JLCR.CircularPolygon):
+            return CircularPolygon(jul)
+        elif jl.isa(jul, JLCR.Polygon):
+            return Polygon(jul)
+        elif jl.isa(jul, JLCR.Rectangle):
+            return Rectangle(jul)
+        elif jl.isa(jul, JLCR.AbstractClosedPath):
+            return ClosedPath(jul)
+        else:
+            return Path(jul)
+    else:
+        raise ValueError(f"Julia type {jl.typeof(jul)} not recognized for wrapping")
+
+
 class JuliaPath:
     def __init__(self, julia_obj):
         if isinstance(julia_obj, juliacall.AnyValue):  # type: ignore
-            if jl.isa(julia_obj, jl.ComplexRegions.AbstractPath):
+            if jl.isa(julia_obj, JLCR.AbstractPath):
                 self.julia = julia_obj
         else:
             raise ValueError("Invalid argument to Path constructor")
@@ -340,11 +376,11 @@ class JuliaPath:
         return jl.getproperty(self.julia, jl.Symbol(field))
 
     def length(self):
-        return jl.ComplexRegions.length(self.julia)
+        return JLCR.length(self.julia)
     
     def curves(self):
         curves = []
-        for j in jl.ComplexRegions.curves(self.julia):
+        for j in JLCR.curves(self.julia):
             if jl.isa(j, jl.Circle):
                 curves.append(Circle(j))
             elif jl.isa(j, jl.Arc):
@@ -366,69 +402,69 @@ class JuliaPath:
         return self.curve(index)
 
     def point(self, t):
-        p = jl.ComplexRegions.point(self.julia, t)
+        p = JLCR.point(self.julia, t)
         return np.complex128(p)
 
     def arclength(self):
-        return jl.ComplexRegions.arclength(self.julia)
+        return JLCR.arclength(self.julia)
 
     def tangent(self, t=0.):
-        p = jl.ComplexRegions.tangent(self.julia, t)
+        p = JLCR.tangent(self.julia, t)
         return np.complex128(p)
 
     def unittangent(self, t=0.):
-        p = jl.ComplexRegions.unittangent(self.julia, t)
+        p = JLCR.unittangent(self.julia, t)
         return np.complex128(p)
     
     def normal(self, t=0.):
-        p = jl.ComplexRegions.normal(self.julia, t)
+        p = JLCR.normal(self.julia, t)
         return np.complex128(p)
 
     def angles(self):
-        return np.array(jl.ComplexRegions.angles(self.julia))
+        return np.array(JLCR.angles(self.julia))
 
     def vertices(self):
-        return np.array(jl.ComplexRegions.vertices(self.julia))
+        return np.array(JLCR.vertices(self.julia))
     
     def vertex(self, k):
-        p = jl.ComplexRegions.vertex(self.julia, k)
+        p = JLCR.vertex(self.julia, k)
         return np.complex128(p)
 
     def arg(self, z):
-        return jl.ComplexRegions.arg(self.julia, z)
+        return JLCR.arg(self.julia, z)
 
     def conj(self):
-        p = jl.ComplexRegions.conj(self.julia)
+        p = JLCR.conj(self.julia)
         return type(self)(p)
 
     def reverse(self):
-        p = jl.ComplexRegions.reverse(self.julia)
+        p = JLCR.reverse(self.julia)
         return type(self)(p)
     
     def isfinite(self):
-        return jl.ComplexRegions.isfinite(self.julia)
+        return JLCR.isfinite(self.julia)
     
     def ispositive(self):
-        return jl.ComplexRegions.ispositive(self.julia)
+        return JLCR.ispositive(self.julia)
 
     def isreal(self):
-        return jl.ComplexRegions.isreal(self.julia)
+        return JLCR.isreal(self.julia)
 
     def isapprox(self, other):
-        return jl.ComplexRegions.isapprox(self.julia, other.julia)
+        return JLCR.isapprox(self.julia, other.julia)
 
     def inv(self):
-        p = jl.ComplexRegions.inv(self.julia)
+        p = JLCR.inv(self.julia)
         return type(self)(p)
 
     def reflect(self, z):
-        return jl.ComplexRegions.reflect(z, self.julia)
+        return JLCR.reflect(z, self.julia)
 
     def closest(self, z):
-        return jl.ComplexRegions.closest(z, self.julia)
+        return JLCR.closest(z, self.julia)
 
     def dist(self, z):
-        return jl.ComplexRegions.dist(z, self.julia)
+        return JLCR.dist(z, self.julia)
     
     def __add__(self, other):
         julia_add = getattr(jl, "+")
@@ -471,18 +507,18 @@ class JuliaPath:
         return type(self)(t)
 
     def intersect(self, other):
-        z = jl.ComplexRegions.intersect(self.julia, other.julia)
+        z = JLCR.intersect(self.julia, other.julia)
         return z
 
 class Path(JuliaPath):
     def __init__(self, curves):
         if isinstance(curves, juliacall.AnyValue):  # type: ignore
-            if jl.isa(curves, jl.ComplexRegions.AbstractPath):
+            if jl.isa(curves, JLCR.AbstractPath):
                 self.julia = curves
             else:
                 raise ValueError("Invalid argument to Path constructor")
         else:
-            self.julia = jl.ComplexRegions.Path([c.julia for c in np.atleast_1d(curves)])
+            self.julia = JLCR.Path([c.julia for c in np.atleast_1d(curves)])
         
         # self.curve = self.get("curve")
         
@@ -493,22 +529,22 @@ class Path(JuliaPath):
 class ClosedPath(Path):
     def __init__(self, curves):
         if isinstance(curves, juliacall.AnyValue):  # type: ignore
-            if jl.isa(curves, jl.ComplexRegions.AbstractClosedPath):
+            if jl.isa(curves, JLCR.AbstractClosedPath):
                 self.julia = curves
             else:
                 raise ValueError("Invalid argument to ClosedPath constructor")
         elif isinstance(curves, Path):
-            self.julia = jl.ComplexRegions.ClosedPath(curves.julia)
+            self.julia = JLCR.ClosedPath(curves.julia)
         else:
-            self.julia = jl.ComplexRegions.ClosedPath([c.julia for c in np.atleast_1d(curves)])
+            self.julia = JLCR.ClosedPath([c.julia for c in np.atleast_1d(curves)])
         
         # self.curve = self.get("curve")
 
     def winding(self, z):
-        return jl.ComplexRegions.winding(self.julia, z)
+        return JLCR.winding(self.julia, z)
             
     def isinside(self, z):
-        return jl.ComplexRegions.isinside(z, self.julia)
+        return JLCR.isinside(z, self.julia)
 
     def __repr__(self):
         N = len(self.curves())
@@ -519,14 +555,14 @@ def Jordan(c):
     if isinstance(c, ClosedPath) or isinstance(c, ClosedCurve):
         return c
     elif isinstance(c, juliacall.AnyValue):  # type: ignore
-        if jl.isa(c, jl.ComplexRegions.AbstractClosedPath):
-            return ClosedPath(c)
-        elif jl.isa(c, jl.ComplexRegions.AbstractClosedCurve):
-            return ClosedCurve(c)
+        if jl.isa(c, JLCR.AbstractClosedPath):
+            return wrap_jl_path(c)
+        elif jl.isa(c, JLCR.AbstractClosedCurve):
+            return wrap_jl_curve(c)
         else:
-            raise ValueError("Julia argument to Jordan not recognized as a closed path or closed curve")
+            raise ValueError("Julia argument to Jordan not recognized")
     else:
-        raise ValueError("Argument to Jordan not recognized as a closed path or closed curve")
+        raise ValueError("Argument to Jordan not recognized")
 
 def get_julia(p):
     if isinstance(p, JuliaCurve) or isinstance(p, JuliaPath):
@@ -537,11 +573,11 @@ def get_julia(p):
 class CircularPolygon(ClosedPath):
     def __init__(self, arg):
         if isinstance(arg, juliacall.AnyValue):  # type: ignore
-            if jl.isa(arg, jl.ComplexRegions.CircularPolygon):
+            if jl.isa(arg, JLCR.CircularPolygon):
                 self.julia = arg
         else:
             vec = juliacall.convert(jl.Vector,[get_julia(a) for a in arg])
-            self.julia = jl.ComplexRegions.CircularPolygon(vec)
+            self.julia = JLCR.CircularPolygon(vec)
         
         self.path = ClosedPath(JuliaPath.get(self, "path"))
     
@@ -558,11 +594,11 @@ class CircularPolygon(ClosedPath):
 class Polygon(ClosedPath):
     def __init__(self, arg):
         if isinstance(arg, juliacall.AnyValue):  # type: ignore
-            if jl.isa(arg, jl.ComplexRegions.Polygon):
+            if jl.isa(arg, JLCR.Polygon):
                 self.julia = arg
         else:
             vec = juliacall.convert(jl.Vector,[get_julia(a) for a in arg])
-            self.julia = jl.ComplexRegions.Polygon(vec)
+            self.julia = JLCR.Polygon(vec)
 
         self.path = ClosedPath(JuliaPath.get(self, "path"))
     
@@ -579,21 +615,21 @@ class Polygon(ClosedPath):
 class Rectangle(Polygon):
     def __init__(self, a, b=None):
         if isinstance(a, juliacall.AnyValue):  # type: ignore
-            if jl.isa(a, jl.ComplexRegions.Rectangle):
+            if jl.isa(a, JLCR.Rectangle):
                 self.julia = a
             else:
                 raise ValueError("Invalid argument to Rectangle constructor")
         else:
             if b is None:
                 # hopefully, a vector of vertices was given
-                self.julia = jl.ComplexRegions.rectangle(a)
+                self.julia = JLCR.rectangle(a)
             else:
                 if np.ndim(a) == 0 and np.ndim(b) > 0:
                     # center and radii were given; use constructor
-                    self.julia = jl.ComplexRegions.Rectangle(a, b)
+                    self.julia = JLCR.Rectangle(a, b)
                 else:
                     # opposite corners were given; use rectangle function
-                    self.julia = jl.ComplexRegions.rectangle(a, b)
+                    self.julia = JLCR.rectangle(a, b)
         
         self.center = JuliaPath.get(self, "center")
         self.radii = JuliaPath.get(self, "radii")
@@ -604,12 +640,31 @@ class Rectangle(Polygon):
 unitcircle = Circle(0, 1)
 def n_gon(n):
     """Construct a regular n-gon as a Polygon object."""
-    return Polygon(jl.ComplexRegions.n_gon(n))
+    return Polygon(JLCR.n_gon(n))
+
+def wrap_jl_region(jul):
+    if not isinstance(jul, juliacall.AnyValue):  # type: ignore
+        raise ValueError("Argument to wrap_jl_region is not a Julia object")
+    if jl.isa(jul, JLCR.AbstractRegion):
+        if jl.isa(jul, JLCR.Annulus):
+            return Annulus(jul)
+        elif jl.isa(jul, JLCR.ExteriorSimplyConnectedRegion):
+            return Exterior1CRegion(jul)
+        elif jl.isa(jul, JLCR.InteriorSimplyConnectedRegion):
+            return Interior1CRegion(jul)
+        elif jl.isa(jul, JLCR.ExteriorRegion):
+            return ExteriorRegion(jul)
+        elif jl.isa(jul, JLCR.InteriorConnectedRegion):
+            return InteriorConnectedRegion(jul)
+        else:
+            raise ValueError(f"Julia type {jl.typeof(jul)} not recognized for wrapping")
+    else:
+        raise ValueError(f"Julia type {jl.typeof(jul)} not recognized for wrapping")
 
 class JuliaRegion:
     def __init__(self, julia_obj):
         if isinstance(julia_obj, juliacall.AnyValue):  # type: ignore
-            if jl.isa(julia_obj, jl.ComplexRegions.AbstractRegion):
+            if jl.isa(julia_obj, JLCR.AbstractRegion):
                 self.julia = julia_obj
         else:
             raise ValueError("Invalid argument to Region constructor")
@@ -619,19 +674,19 @@ class JuliaRegion:
 
     def contains(self, z=None):
         if z is not None:
-            return getattr(jl.ComplexRegions, "in")(z, self.julia)
+            return getattr(JLCR, "in")(z, self.julia)
         else:
-            getattr(jl.ComplexRegions, "in")(self.julia)
+            getattr(JLCR, "in")(self.julia)
 
     def innerboundary(self):
-        b = jl.ComplexRegions.innerboundary(self.julia)
+        b = JLCR.innerboundary(self.julia)
         if isinstance(b, juliacall.VectorValue):  # type: ignore
             return [JuliaPath(j) for j in b]
         else:
             return JuliaPath(b)
 
     def outerboundary(self):
-        b = jl.ComplexRegions.outerboundary(self.julia)
+        b = JLCR.outerboundary(self.julia)
         if isinstance(b, juliacall.VectorValue):  # type: ignore
             paths = []
             for j in b:
@@ -641,22 +696,22 @@ class JuliaRegion:
             return JuliaPath(b)
 
     def union(self, other):
-        r = jl.ComplexRegions.union(self.julia, other.julia)
+        r = JLCR.union(self.julia, other.julia)
         return JuliaRegion(r)
     
     def intersect(self, other):
-        r = jl.ComplexRegions.intersect(self.julia, other.julia)
+        r = JLCR.intersect(self.julia, other.julia)
         return JuliaRegion(r)
     
 class Exterior1CRegion(JuliaRegion):
     def __init__(self, boundary):
         if isinstance(boundary, juliacall.AnyValue):  # type: ignore
-            if jl.isa(boundary, jl.ComplexRegions.ExteriorSimplyConnectedRegion) :
+            if jl.isa(boundary, JLCR.ExteriorSimplyConnectedRegion) :
                 self.julia = boundary
             else:
                 raise ValueError("Invalid argument to Exterior1CRegion constructor")
         else:
-            self.julia = jl.ComplexRegions.ExteriorSimplyConnectedRegion(boundary.julia)
+            self.julia = JLCR.ExteriorSimplyConnectedRegion(boundary.julia)
 
         self.boundary = Jordan(JuliaRegion.get(self, "boundary"))
 
@@ -669,13 +724,13 @@ class Exterior1CRegion(JuliaRegion):
 class ExteriorRegion(JuliaRegion):
     def __init__(self, inner):
         if isinstance(inner, juliacall.AnyValue):  # type: ignore
-            if jl.isa(inner, jl.ComplexRegions.ExteriorRegion):
+            if jl.isa(inner, JLCR.ExteriorRegion):
                 self.julia = inner
             else:
                 raise ValueError("Invalid argument to ExteriorRegion constructor")
         else:
             innerb = juliacall.convert(jl.Vector, [get_julia(b) for b in inner])
-            self.julia = jl.ComplexRegions.ExteriorRegion(innerb)
+            self.julia = JLCR.ExteriorRegion(innerb)
 
         b = JuliaRegion.get(self, "inner")
         self.inner = [Jordan(j) for j in b]
@@ -689,12 +744,12 @@ class ExteriorRegion(JuliaRegion):
 class Interior1CRegion(JuliaRegion):
     def __init__(self, boundary):
         if isinstance(boundary, juliacall.AnyValue):  # type: ignore
-            if jl.isa(boundary, jl.ComplexRegions.InteriorSimplyConnectedRegion) :
+            if jl.isa(boundary, JLCR.InteriorSimplyConnectedRegion) :
                 self.julia = boundary
             else:
                 raise ValueError("Invalid argument to InteriorConnectedRegion constructor")
         else:
-            self.julia = jl.ComplexRegions.InteriorSimplyConnectedRegion(boundary.julia)
+            self.julia = JLCR.InteriorSimplyConnectedRegion(boundary.julia)
 
         self.boundary = Jordan(JuliaRegion.get(self, "boundary"))
 
@@ -707,13 +762,13 @@ class Interior1CRegion(JuliaRegion):
 class InteriorConnectedRegion(JuliaRegion):
     def __init__(self, outer, inner=[]):
         if isinstance(outer, juliacall.AnyValue):  # type: ignore
-            if jl.isa(outer, jl.ComplexRegions.InteriorConnectedRegion) :
+            if jl.isa(outer, JLCR.InteriorConnectedRegion) :
                 self.julia = outer
             else:
                 raise ValueError("Invalid argument to InteriorConnectedRegion constructor")
         else:
             innerb = juliacall.convert(jl.Vector, [get_julia(b) for b in inner])
-            self.julia = jl.ComplexRegions.InteriorRegion(outer.julia, innerb)
+            self.julia = JLCR.InteriorRegion(outer.julia, innerb)
 
         b = JuliaRegion.get(self, "inner")
         self.inner = [Jordan(j) for j in b]
@@ -728,32 +783,32 @@ class InteriorConnectedRegion(JuliaRegion):
         
 def between(curve1, curve2):
     """Construct the region between two closed curves."""
-    r = jl.ComplexRegions.between(curve1.julia, curve2.julia)
+    r = JLCR.between(curve1.julia, curve2.julia)
     return InteriorConnectedRegion(r)
 
 def interior(curve):
     """Construct the interior region of a closed curve."""
-    r = jl.ComplexRegions.interior(curve.julia)
+    r = JLCR.interior(curve.julia)
     return Interior1CRegion(r)
 
 def exterior(curve):
     """Construct the exterior region of a closed curve."""
-    r = jl.ComplexRegions.exterior(curve.julia)
+    r = JLCR.exterior(curve.julia)
     return Exterior1CRegion(r)
 
 def disk(center, radius):
     """Construct a disk as an InteriorRegion."""
-    r = jl.ComplexRegions.disk(center, radius)
+    r = JLCR.disk(center, radius)
     return Interior1CRegion(r)
 
 def quad(rect:Rectangle):
     """Construct a quadrilateral region from a Rectangle."""
-    r = jl.ComplexRegions.quad(rect.julia)
+    r = JLCR.quad(rect.julia)
     return Interior1CRegion(r)
 
 def halfplane(l:Line):
     """Construct a half-plane as an InteriorRegion from a Line."""
-    r = jl.ComplexRegions.halfplane(l.julia)
+    r = JLCR.halfplane(l.julia)
     return Interior1CRegion(r)
 
 upperhalfplane = halfplane(Line(0.0, direction=1.0))
@@ -762,24 +817,24 @@ lefthalfplane = halfplane(Line(0.0, direction=1.0j))
 righthalfplane = halfplane(Line(0.0, direction=-1.0j))
 
 class Annulus(InteriorConnectedRegion):
-    def __init__(self, outer, inner, center=0j):
+    def __init__(self, outer, inner=None, center=0j):
         if isinstance(outer, juliacall.AnyValue):  # type: ignore
-            if jl.isa(outer, jl.ComplexRegions.Annulus):
+            if jl.isa(outer, JLCR.Annulus):
                 self.julia = outer
-            elif jl.isa(outer, jl.ComplexRegions.Circle) and jl.isa(inner, jl.ComplexRegions.Circle):
-                self.julia = jl.ComplexRegions.Annulus(outer, inner)
+            elif jl.isa(outer, JLCR.Circle) and jl.isa(inner, JLCR.Circle):
+                self.julia = JLCR.Annulus(outer, inner)
             else:
                 raise ValueError("Invalid argument to Annulus constructor")
         elif isinstance(inner, Circle) and isinstance(outer, Circle):
-            self.julia = jl.ComplexRegions.Annulus(outer.julia, inner.julia)
+            self.julia = JLCR.Annulus(outer.julia, inner.julia)
         else:
-            self.julia = jl.ComplexRegions.Annulus(outer, inner, center)
+            self.julia = JLCR.Annulus(outer, inner, center)
 
         self.inner = Circle(JuliaRegion.get(self, "inner"))
         self.outer = Circle(JuliaRegion.get(self, "outer"))
 
     def modulus(self):
-        return jl.ComplexRegions.modulus(self.julia)
+        return JLCR.modulus(self.julia)
     
     def isfinite(self):
         return True
