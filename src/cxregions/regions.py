@@ -419,7 +419,8 @@ class InteriorConnectedRegion(JuliaRegion):
                 raise ValueError("Invalid argument to InteriorConnectedRegion constructor")
         else:
             innerb = juliacall.convert(jl.Vector, [get_julia(b) for b in inner])
-            self.julia = JLCR.InteriorRegion(outer.julia, innerb)
+            outerb = get_julia(outer)
+            self.julia = JLCR.InteriorConnectedRegion(outerb, innerb)
 
         b = JuliaRegion.get(self, "inner")
         self.inner = [Jordan(j) for j in b]

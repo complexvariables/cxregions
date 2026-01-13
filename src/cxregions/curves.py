@@ -130,7 +130,7 @@ class JuliaCurve:
         return JLCR.arclength(self.julia)
 
     def tangent(self, t=0.):
-        """Compute the tangent vector at parameter t.
+        """Compute the tangent at parameter t.
         
         Parameters
         ----------
@@ -140,13 +140,13 @@ class JuliaCurve:
         Returns
         -------
         complex
-            Tangent vector at parameter t
+            Tangent at parameter t
         """
         p = JLCR.tangent(self.julia, t)
         return np.complex128(p)
 
     def unittangent(self, t=0.):
-        """Compute the unit tangent vector at parameter t.
+        """Compute the unit tangent at parameter t.
         
         Parameters
         ----------
@@ -156,13 +156,13 @@ class JuliaCurve:
         Returns
         -------
         complex
-            Unit tangent vector at parameter t
+            Unit tangent at parameter t
         """
         p = JLCR.unittangent(self.julia, t)
         return np.complex128(p)
     
     def normal(self, t):
-        """Compute the normal vector at parameter t.
+        """Compute the normal at parameter t.
         
         Parameters
         ----------
@@ -172,7 +172,7 @@ class JuliaCurve:
         Returns
         -------
         complex
-            Normal vector at parameter t
+            Normal at parameter t
         """
         p = JLCR.normal(self.julia, t)
         return np.complex128(p)
@@ -260,7 +260,7 @@ class JuliaCurve:
         return JLCR.isapprox(self.julia, other.julia)
 
     def inv(self):
-        """Compute the inversion of the curve with respect to the unit circle.
+        """Compute the inversion of the curve with respect to the origin.
         
         Returns
         -------
@@ -519,7 +519,7 @@ class Curve(JuliaCurve):
     point : callable or juliacall.AnyValue
         Either a function that maps parameter values to complex points,
         or a Julia curve object to wrap
-    tangent : callable, optional
+    tangent : callable
         Function that maps parameter values to tangent vectors
     domain : tuple of float, optional
         Parameter domain as (start, end), default is (0.0, 1.0)
@@ -527,7 +527,7 @@ class Curve(JuliaCurve):
     Examples
     --------
     >>> # Create a curve from a function
-    >>> curve = Curve(lambda t: t + 1j*t**2)
+    >>> curve = Curve(lambda t: t + 1j*t**2, lambda t: 1 + 2j*t)
     """
     
     def __init__(self, point, tangent=None, domain=(0.0, 1.0)):
@@ -540,7 +540,7 @@ class Curve(JuliaCurve):
             self.julia = JLCR.Curve(point, tangent, domain[0], domain[1])
 
     def inv(self):
-        """Compute the inversion of the curve with respect to the unit circle.
+        """Compute the inversion of the curve with respect to the origin.
         
         Returns
         -------
@@ -565,7 +565,7 @@ class ClosedCurve(Curve):
     point : callable or juliacall.AnyValue
         Either a function that maps parameter values to complex points,
         or a Julia closed curve object to wrap
-    tangent : callable, optional
+    tangent : callable
         Function that maps parameter values to tangent vectors
     domain : tuple of float, optional
         Parameter domain as (start, end), default is (0.0, 1.0)
@@ -573,7 +573,9 @@ class ClosedCurve(Curve):
     Examples
     --------
     >>> # Create a closed curve (unit circle)
-    >>> curve = ClosedCurve(lambda t: np.exp(2j * np.pi * t))
+    >>> point = lambda t: np.exp(2j * np.pi * t)
+    >>> tangent = lambda t: 2j * np.pi * np.exp(2j * np.pi * t)
+    >>> curve = ClosedCurve(point, tangent)
     """
     
     def __init__(self, point, tangent=None, domain=(0.0, 1.0)):
@@ -679,7 +681,7 @@ class Line(Curve):
         return False
 
     def inv(self):
-        """Compute the inversion of the line with respect to the unit circle.
+        """Compute the inversion of the line with respect to the origin.
         
         Returns
         -------
@@ -778,7 +780,7 @@ class Circle(ClosedCurve):
         bool
             True if counterclockwise, False if clockwise
         """
-        return self.ccw()
+        return self.ccw
 
     def isfinite(self):
         """Check if the circle is finite.
@@ -791,7 +793,7 @@ class Circle(ClosedCurve):
         return True
 
     def inv(self):
-        """Compute the inversion of the circle with respect to the unit circle.
+        """Compute the inversion of the circle with respect to the origin.
         
         Returns
         -------
@@ -847,7 +849,7 @@ class Segment(Curve):
         self.last = JuliaCurve.get(self, "zb")
 
     def inv(self):
-        """Compute the inversion of the segment with respect to the unit circle.
+        """Compute the inversion of the segment with respect to the origin.
         
         Returns
         -------
@@ -955,7 +957,7 @@ class Arc(Curve):
         self.delta = JuliaCurve.get(self, "delta")
 
     def inv(self):
-        """Compute the inversion of the arc with respect to the unit circle.
+        """Compute the inversion of the arc with respect to the origin.
         
         Returns
         -------

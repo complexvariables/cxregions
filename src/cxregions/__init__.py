@@ -64,7 +64,7 @@ __all__ = [
 ]
 
 # Package metadata
-__version__ = "0.1.2"
+__version__ = "0.1.4"
 __author__ = "Toby Driscoll"
 __email__ = "driscoll@udel.edu"
 __description__ = "A Python interface to the ComplexRegions.jl Julia package"
