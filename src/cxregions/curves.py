@@ -116,8 +116,22 @@ class JuliaCurve:
         complex
             Point on the curve at parameter t
         """
-        p = JLCR.point(self.julia, t)
-        return np.complex128(p)
+        if isinstance(t, (list, tuple, np.ndarray)):
+            # Use broadcasting in Julia for arrays of points
+            res = jl.broadcast(self.julia, t)
+            return np.array(res)
+        else:
+            return np.complex128(JLCR.point(self.julia, t))
+
+    def __call__(self, t):
+        """Evaluate the curve at parameter value t (alias for point).
+        
+        Parameters
+        ----------
+        t : float
+            Parameter value, typically in [0, 1]
+        """
+        return self.point(t)
 
     def arclength(self):
         """Compute the arc length of the curve.
