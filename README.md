@@ -17,7 +17,7 @@ The first time you import `cxregions`, it will set up a Julia environment and in
 Here is a simple example of how to use the `cxregions` package:
 
 ```python
-from cxregions import Polygon, Line, Arc
+from cxregions import Polygon, Line, Arc, Mobius
 
 # Create curves
 line1 = Line(0+0j, 2+2j)
@@ -25,6 +25,11 @@ print(line1.point(0.5))  # Should print 1+1j
 arc1 = Arc(-1j, 1j, -1)
 p = Polygon([4, 4 + 3j, 3j, -2j, 6 - 2j, 6])
 print(p.winding(5 - 1j)) # Should print 1
+
+# Möbius transformation
+f = Mobius(1, 1, 1, -1) # f(z) = (z+1)/(z-1)
+print(f(0)) # -1.0
+print(f(line1)) # A Circle
 ```
 
 Full documentation and examples can be found in the [ComplexRegions.jl documentation](https://complexvariables.github.io/ComplexRegions.jl/stable/). Most of the Julia methods shown there are members of the corresponding Python classes.
