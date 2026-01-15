@@ -47,6 +47,7 @@ def test_mobius_composition():
     g = Mobius(5, 6, 7, 8)
     h = f @ g
     z = 2 - 3j
+    assert isinstance(h, Mobius)
     assert h(z) == pytest.approx(f(g(z))) # type: ignore
 
 def test_mobius_array():
