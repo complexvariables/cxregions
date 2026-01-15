@@ -108,19 +108,13 @@ class Mobius:
         """
         return Mobius(jl.inv(self.julia))
     
-    def inverse(self):
-        """
-        Return the inverse Möbius transformation (alias for inv).
-        """
-        return self.inv()
-
     def __matmul__(self, other):
         """
         Compose two Möbius transformations using the @ operator.
         """
         if isinstance(other, Mobius):
             # In Julia, composition is ∘
-            compose = jl.seval("∘")
+            compose = getattr(jl, "∘")
             return Mobius(compose(self.julia, other.julia))
         return NotImplemented
 
@@ -128,7 +122,9 @@ class Mobius:
         """
         Compose two Möbius transformations.
         """
-        return self @ other
+        if isinstance(other, Mobius):
+            return Mobius(getattr(jl, "∘")(self.julia, other.julia))
+        return NotImplemented
 
     def __repr__(self):
         return f"Mobius({jl.repr(self.julia)})"
