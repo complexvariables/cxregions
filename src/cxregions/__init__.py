@@ -41,7 +41,7 @@ from .paths import (
 from .regions import (
     JuliaRegion, Exterior1CRegion, Interior1CRegion, ExteriorRegion, 
     InteriorConnectedRegion, Annulus, wrap_jl_region, Jordan, get_julia,
-    between, interior, exterior, disk, halfplane,
+    between, interior, exterior, disk, unitdisk, halfplane,
     upperhalfplane, lowerhalfplane, lefthalfplane, righthalfplane
 )
 
@@ -63,8 +63,8 @@ __all__ = [
     "Exterior1CRegion", "Interior1CRegion", "ExteriorRegion", "InteriorConnectedRegion",
     "Annulus",
     
-    # Utility functions
-    "n_gon", "unitcircle", "between", "interior", "exterior", "disk", "quad",
+    # Utilities
+    "n_gon", "unitcircle", "unitdisk", "between", "interior", "exterior", "disk", "quad",
     "halfplane", "upperhalfplane", "lowerhalfplane", "lefthalfplane", "righthalfplane"
 ]
 

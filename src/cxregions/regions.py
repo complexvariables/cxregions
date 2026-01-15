@@ -635,7 +635,7 @@ def halfplane(l):
 
 
 # Pre-defined half-plane regions
-from .curves import Line
+from .curves import Line, Circle
 
 upperhalfplane = halfplane(Line(0.0, direction=1.0))
 """Upper half-plane region (Im(z) > 0)."""
@@ -648,3 +648,6 @@ lefthalfplane = halfplane(Line(0.0, direction=1.0j))
 
 righthalfplane = halfplane(Line(0.0, direction=-1.0j))
 """Right half-plane region (Re(z) > 0)."""
+
+unitdisk = interior(Circle(0.0, 1.0))
+"""Unit disk region (|z| < 1)."""
