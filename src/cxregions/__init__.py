@@ -31,6 +31,8 @@ from .curves import (
     wrap_jl_curve, unitcircle
 )
 
+from .mobius import Mobius
+
 from .paths import (
     JuliaPath, Path, ClosedPath, CircularPolygon, Polygon, Rectangle,
     wrap_jl_path, n_gon, quad
@@ -54,6 +56,9 @@ __all__ = [
     # Path classes  
     "Path", "ClosedPath", "CircularPolygon", "Polygon", "Rectangle",
     
+    # Transformation classes
+    "Mobius",
+
     # Region classes
     "Exterior1CRegion", "Interior1CRegion", "ExteriorRegion", "InteriorConnectedRegion",
     "Annulus",

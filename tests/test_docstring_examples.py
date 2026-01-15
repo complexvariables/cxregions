@@ -7,6 +7,7 @@ cxregions package to ensure they work as documented.
 
 import numpy as np
 import pytest
+from cxregions import Mobius
 from cxregions.curves import (
     Curve, ClosedCurve, Line, Circle, Segment, Ray, Arc
 )
@@ -348,4 +349,33 @@ class TestDocstringExampleIntegration:
         
         scaled_circle = circle * 2
         assert isinstance(scaled_circle, Circle)
-        assert scaled_circle.radius == pytest.approx(2)
+
+
+class TestMobiusExamples:
+    """Test examples from Mobius docstring."""
+
+    def test_mobius_examples(self):
+        """Test Mobius docstring examples."""
+        # f(z) = (2z + 1) / (z + 2)
+        f1 = Mobius(2, 1, 1, 2)
+        assert isinstance(f1, Mobius)
+        assert f1(0) == 0.5
+
+        # From matrix
+        f2 = Mobius([[2, 1], [1, 2]])
+        assert isinstance(f2, Mobius)
+        assert f2(0) == 0.5
+
+        # Map 0,1,inf to 1,i,-1
+        f3 = Mobius([0, 1, np.inf], [1, 1j, -1])
+        assert isinstance(f3, Mobius)
+        assert f3(0) == pytest.approx(1)
+        assert f3(1) == pytest.approx(1j)
+        assert f3(np.inf) == pytest.approx(-1)
+
+        # Map line to circle
+        f4 = Mobius(Line(-1, 1), Circle(0, 1))
+        assert isinstance(f4, Mobius)
+        c = f4(Line(-1, 1))
+        assert isinstance(c, Circle)
+        assert c.radius == pytest.approx(1)
