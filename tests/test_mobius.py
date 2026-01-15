@@ -5,9 +5,9 @@ from cxregions import Mobius, Circle, Line, interior, disk, upperhalfplane
 def test_mobius_coeffs():
     # f(z) = 2z + 1 / (z + 2)
     f = Mobius(2, 1, 1, 2)
-    assert f(0) == 0.5
-    assert f(1) == 1.0
-    assert f(np.inf) == 2.0
+    assert f(0) == pytest.approx(0.5)
+    assert f(1) == pytest.approx(1.0)
+    assert f(np.inf) == pytest.approx(2.0)
 
 def test_mobius_3pt():
     # Map 0, 1, inf to 1, i, -1 (should be Cayley-ish or similar)
@@ -15,6 +15,7 @@ def test_mobius_3pt():
     assert f(0) == pytest.approx(1)
     assert f(1) == pytest.approx(1j)
     assert f(np.inf) == pytest.approx(-1)
+    assert f([0, 1, np.inf]) == pytest.approx([1, 1j, -1])
 
 def test_mobius_curve():
     # Map upper half plane boundary (Line) to unit circle

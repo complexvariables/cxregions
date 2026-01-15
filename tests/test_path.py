@@ -19,6 +19,8 @@ def test_path_points(segment, arc):
                   (2.5, -segment.point(0.5)),
                   (3, -segment.point(1))]:
         assert np.isclose(P.point(t), z)
+        assert np.isclose(P(t), z)
+    assert P([0, 1, 1.5]) == pytest.approx([segment.point(0), segment.point(1), arc.point(0.5) ])
 
 def test_path_curve_access(segment, arc):
     P = Path([segment, arc])

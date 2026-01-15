@@ -17,6 +17,7 @@ def test_curve_point(circfun, circtanfun):
     c = ClosedCurve(circfun, circtanfun)
     assert np.isclose(c.point(0.25), 1j)
     assert np.isclose(c.point(0.5), -1)
+    assert c([0.25, 0.5, 0.75]) == pytest.approx([1j, -1, -1j])
 
 def test_curve_tangent(circfun, circtanfun):
     c = Curve(circfun, circtanfun, (0, 1))
