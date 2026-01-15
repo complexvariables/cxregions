@@ -601,6 +601,21 @@ class ClosedCurve(Curve):
             Winding number (positive for counterclockwise orientation)
         """
         return JLCR.winding(self.julia, z)
+    
+    def hasinside(self, z):
+        """Check if point z is in the interior of the closed curve.
+        
+        Parameters
+        ----------
+        z : complex
+            Point to test
+
+        Returns
+        -------
+        bool
+            True if z is in the interior, False otherwise
+        """
+        return JLCR.isinside(z, self.julia)
 
     def __repr__(self):
         return str("Closed curve")
