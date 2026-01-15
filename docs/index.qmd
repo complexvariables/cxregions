@@ -1,0 +1,29 @@
+---
+title: "cxregions"
+---
+
+This package provides classes and methods that are useful for working with curves and regions in the (extended) complex plane. It presents a Pythonic interface to the functionality provided by the Julia package [ComplexRegions.jl](https://complexvariables.github.io/ComplexRegions.jl/stable/), which is the computational engine. Julia and the necessary dependencies are installed automatically when you first use `cxregions`.
+
+## Core classes
+
+These are three core classes in the package. Each is in a submodule of the same name, but are also imported into the top-level namespace for convenience. In general, names follow Julian conventions rather than Python conventions.
+
+### curves
+
+A curve is a smooth curve in the extended complex plane. Implicitly, curves are expected to be non-self-intersecting, but that condition is not enforced. The generic [Curve](reference/curves.qmd#cxregions.curves.Curve) type requires you to specify explicit parameterizations for the point and tangent that are not checked for smoothness. Particular predefined subtypes are [Circle](reference/curves.qmd#cxregions.curves.Circle), [Arc](reference/curves.qmd#cxregions.curves.Arc), [Line](reference/curves.qmd#cxregions.curves.Line), [Ray](reference/curves.qmd#cxregions.curves.Ray), and [Segment](reference/curves.qmd#cxregions.curves.Segment).
+
+### paths
+
+A path is a piecewise-continuous complex-valued path. In practice, a [Path](reference/paths.qmd#cxregions.paths.Path) can be specified as a vector of curves. The path is checked for continuity at creation time. The most important provided specific path subtypes are [Polygon](reference/paths.qmd#cxregions.paths.Polygon) and [CircularPolygon](reference/paths.qmd#cxregions.paths.CircularPolygon).
+
+Both curves and paths have *closed* subtypes. These are additionally checked at creation to ensure that the initial and final points are the same.
+
+One atypical aspect of curves and paths, even "closed" ones, is that they lie in the extended or compactified complex plane and thus may be unbounded. For instance, a line in the plane may be interpreted as a circle on the Riemann sphere, and is thus a closed curve passing through infinity.
+
+### regions
+
+A region is an open region in the extended plane bounded by closed curves or paths. These include the simply connected [Interior1CRegion](reference/regions.qmd#cxregions.regions.Interior1CRegion) and [Exterior1CRegion](reference/regions.qmd#cxregions.regions.Exterior1CRegion) types, which are bounded by a single closed curve or path, as well as more complicated multiply connected regions bounded by several such objects.
+
+## Tolerance
+
+Boundaries and endpoints are not well-posed ideas in floating-point, since an arbitrarily small perturbation to a value can move a point on or off of them. Thus, many concepts in the package such as intersection or continuity are checked only up to a small tolerance. This value defaults to a modest multiple of machine precision and can be overridden on a per-call basis.

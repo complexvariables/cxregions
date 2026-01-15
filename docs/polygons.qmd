@@ -1,0 +1,76 @@
+# Polygons
+
+There are two specialized subtypes of the `ClosedPath` type: `CircularPolygon` and its subtype `Polygon`.
+
+## CircularPolygon
+
+A `CircularPolygon` is a closed path whose curve components all have type `Arc`, `Ray`, and `Segment`. In contrast to the usual notion of a polygon, the path may be unbounded. Construct a value by calling `CircularPolygon(c)` with a vector or `Path` of curves of appropriate types; continuity and closure of the path are checked as necessary.
+
+In addition to the usual methods for a `ClosedPath`, the following are implemented:
+
+| Method | Description |
+|:-----|:-----|
+| `side`| Alias for `curve`. |
+| `P.winding(z)` | Winding number of `P` relative to `z`. |
+| `P.truncate()` | Replace infinite sides with finite ones. |
+
+## Polygon
+
+A `Polygon` is a closed path whose curve components all have type `Ray` and `Segment`. In contrast to the usual notion of a polygon, the path may be unbounded. Construct a value by calling `Polygon(c)` with a vector or `Path` of curves of appropriate types; continuity and closure of the path are checked as necessary.
+
+An alternative construction is to provide a vector of vertices. In place of an infinite vertex, you can supply a tuple of the angles of the two rays that meet there. See the examples section below.
+
+In addition to the methods for `CircularPolygon`, the `Polygon` type offers
+
+| Method | Description |
+|:-----|:-----|
+| `P.angles()` | Interior angles of the polygon. |
+
+Angles at a finite vertex are in the interval $(0, 2\pi]$, while angles at an infinite vertex are in $[-2\pi, 0]$, representing the angle at the pole of the Riemann sphere.
+
+Two additional special polygon constructors are defined:
+
+| Method | Description |
+|:-----|:-----|
+| `rectangle(xlim, ylim)` or `rectangle(z1, z2)` |  Construct an axes-aligned rectangle.  |
+| `n_gon(n)` | Construct a regular n-gon with unit vertices. |
+
+## Examples
+
+```{python}
+from cxregions import *
+import numpy as np
+```
+
+A big plus:
+
+```{python}
+box = [1-1j, 3-1j, 3+1j]
+plus = Polygon([*box, *[1j*z for z in box], *[-z for z in box], *[-1j*z for z in box]])
+print(f"angles of plus polygon: {plus.angles() / np.pi} * π")
+```
+
+A Koch snowflake:
+
+```{python}
+v = n_gon(3).vertices()
+pattern = [1] + [(z - v[0]) / (v[0] - v[2])/3 + 2/3 for z in v]
+
+def koch(a, b):
+    return [b + (a - b) * p for p in pattern]
+
+for m in range(3):
+    n = len(v)
+    print(f"Iteration {m+1}: n = {n}")
+    v = [point for k in range(n) for point in koch(v[k], v[(k+1) % n])]
+
+koch_polygon = Polygon(v)
+print(f"Final Koch snowflake has {len(v)} vertices")
+```
+
+Infinite channel with a step, using tuples to specify the angles of rays going to infinity:
+
+```{python}
+p = Polygon([0, -1j, (0, 0), 1j, (np.pi, np.pi)])
+print(f"angles of channel polygon: {p.angles() / np.pi} * π")
+```

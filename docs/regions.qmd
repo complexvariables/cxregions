@@ -1,0 +1,78 @@
+---
+title: Regions
+kernelspec: 
+    name: python3
+---
+
+A **region** is the open set on one side of a closed curve or closed path.
+
+## Simply connected
+
+A simply connected region is one bounded by a single closed curve or path; topologically, it has no holes. The `Interior1CRegion` and `Exterior1CRegion` types represent the interior and exterior of such a boundary, respectively. The preferred method for constructing a value of one of these types is to use `interior` or `exterior` with a closed curve or path as argument. If the given curve is bounded, these constructors ignore its orientation and select the bounded or unbounded region it defines, respectively. For an unbounded boundary curve, points "to the left" of it are considered the interior.
+
+There are also methods to facilitate construction of important common regions. For disks there are
+
+- `disk(C)` for a `Circle` `C`
+- `disk(center, radius)`
+- `unitdisk`
+
+For half-planes there are
+
+- `halfplane(L)` for a `Line` `L`
+- `upperhalfplane`, `lowerhalfplane`, `lefthalfplane`, `righthalfplane`
+
+## Multiply connected
+
+The `ExteriorRegion` class represents a region that is exterior to several closed curves or paths, which are given as an array of such objects.
+
+The `InteriorRegion` class represents a region that is interior to one outer closed curve or path and exterior to several inner closed curves or paths, which are given as an array of such objects. The particular case of a doubly connected region can be constructed by `between(outer, inner)`, giving the two boundary components. The given orientation is ignored for any bounded component.
+
+### Annulus
+
+An [`Annulus`](reference/regions.qmd#cxregions.regions.Annulus) is the doubly connected region between two concentric circles. Construction is by `Annulus(outer, inner)`, where `Circle` values are given explicitly, or by `Annulus(outrad, inrad, center=0)`, giving the radii and optionally the center.
+
+
+## Methods
+
+Here `R` is a `Region` subtype and `z` is a number.
+
+| Method              | Description                              |
+| :------------------ | :--------------------------------------- |
+| `R.boundary()`      | Boundary curve(s)/path(s) of a region.   |
+| `R.contains(z)`     | Determine whether `z` is in `R`.         |
+| `R.isfinite()`      | Determine whether the region is bounded. |
+
+Default implementations are provided for `+`, `-`, `*`, `/`, performing translation, rotation, and scaling.
+
+| Method | Description |
+|:-----|:-----|
+| `R.outerboundary()` | Curve/path of the outermost boundary, if it exists. |
+| `R.innerboundary()` | Curve(s)/path(s) of inner boundaries (that `R` is exterior to). |
+
+## Examples
+
+```{python}
+from cxregions import *
+import numpy as np
+import matplotlib.pyplot as plt
+```
+
+Here is a "dog bone" region.
+
+```{python}
+a = Arc(-1, 1, -1j)
+right = Path([4 + 1j + a, 4 - 1j - 1j * a])
+s = Segment(-3 + 1j, 3 + 1j)
+p = ClosedPath([s, *right, -s, *(-right)])
+r = interior(np.exp(1j * np.pi / 4) * p)
+print(r.boundary.arclength())
+```
+
+A multiply-connected exterior region:
+
+```{python}
+c = Circle(0, 1)
+t = n_gon(3)
+s = n_gon(4)
+exterior_region = ExteriorRegion([c, 3 + s, 6 + t])
+print(exterior_region)

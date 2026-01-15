@@ -1,0 +1,69 @@
+---
+title: Paths
+kernelspec: 
+    name: python3
+---
+
+A **path** is a sequence of `Curve` values that compose a continuous, complex-valued path. A path with $n$ components is parameterized over the interval $[0, n]$, with the first component covering $[0, 1]$, the second covering $[1, 2]$, and so on. The path is checked for continuity at the vertices at construction time.
+
+## Path base class
+
+A path is created by calling `Path(c)`, where `c` is a vector of curves subtyped from `Curve`. The constructor tests the endpoints of the given curves for continuity up to a selectable tolerance.
+
+Every `Path` subtype provides the following method:
+
+| Method | Description |
+|:-----|:-----|
+| `P.curve(k)`| `k`th curve of `P`. |
+| `P.curves()`| Return a vector of the curves constituting `P`. |
+| `P.vertices()` | Vertices of `P` (the endpoints of the constituent curves) |
+| `P.vertex(k)`| `k`th vertex of `P`. |
+| `len(P)`| Number of curves in the path. |
+| `P.isfinite()`| True if the path is bounded. |
+| `P.point(t)` | Point on the path. |
+| `P.point(t_array)`| Vectorization of `point`. |
+| `P.tangent(t)` | Complex-valued tangent at a point. |
+| `P.unittangent(t)`| Normalized tangent at a point. |
+| `P.normal(t)`| Leftward-pointing unit normal at a point. |
+| `P.conj()`| Complex conjugate of the path. |
+| `P.reverse()`| Reverse the orientation of the path. |
+| `P + z`, `P - z`, `P * z`, `P / z`| Translate, rotate and scale a path. |
+| `P1.isapprox(P2)` | Determine whether two values represent the same path. |
+| `P.arclength()` | Arc length of the path. |
+| `P.dist(z)` | Distance from a point to the path. |
+| `P.closest(z)`| Point on the path nearest to a given number. |
+
+## ClosedPath
+
+The chief difference from the `Path` type is that the constructor also checks whether the initial and final points coincide (up to tolerance). The `ClosedPath` subtype modifies a few of the implementations above:
+
+| Method | Description |
+|:-----|:-----|
+| `P.vertices()`| Only the unique vertices; i.e., does not duplicate the initial/final vertex. |
+| `P.curve(k)` | `k`th curve of the path in a circular/modulo sense. |
+| `P.vertex(k)`| `k`th vertex of the path in a circular/modulo sense. |
+| `P.point()`, `P.tangent()`, `P.unittangent()`, `P.normal()`| Use a circular/modulo interpretation of the parameter. |
+| `P.winding(z)` | Winding number of `P` about `z`. |
+| `P.isinside(z)` | Detect whether `z` lies inside the path. |
+| `P.isoutside(z)` | Detect whether `z` lies outside the path. |
+
+## Examples
+
+```{python}
+from cxregions import *
+```
+
+Here is a path defined by arcs and segments.
+
+```{python}
+a = Arc(-1, 1, -1j)
+right = Path([4 + 1j + a, 4 - 1j - 1j * a])
+s = Segment(-3 + 1j, 3 + 1j)
+p = ClosedPath([s, *right, -s, *(-right)])
+print(p)
+```
+
+```{python}
+print(f"Arc length: {p.arclength()}")
+print(f"Vertices: {p.vertices()}")
+```

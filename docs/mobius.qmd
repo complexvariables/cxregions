@@ -1,0 +1,39 @@
+---
+kernelspec: 
+    name: python3
+---
+
+# Mobius
+
+A **Möbius transformation** (also called bilinear or fractional-linear transformation) is the ratio of two linear polynomials:
+
+$$
+f(z)=\frac{az+b}{cz+d}.
+$$
+
+Among other notable properties, they map circles and lines to other circles and lines.
+
+The package defines a `Mobius` type that can be constructed in a variety of ways:
+
+| Construction         | Description                                                                                                                                                           |
+| :------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `Mobius(a, b, c, d)` | Specify the coefficients as in the formula above.                                                                                                                     |
+| `Mobius(A)`          | Specify the coefficients as an array $A=[a\;b;\;\,c\;d]$.                                                                                                             |
+| `Mobius(z, w)`       | Construct the unique transformation that maps the three points `z[1], z[2], z[3]` to `w[1], w[2], w[3]`, respectively. Either vector of points may include `Inf`.     |
+| `Mobius(C1, C2)`     | Construct a transformation that maps the [Line](reference/curves.qmd#cxregions.curves.Line) or [Circle](reference/curves.qmd#cxregions.curves.Circle) `C1` to the Line or Circle `C2`. |
+|                      |                                                                                                                                                                       |
+
+## Methods
+
+Suppose `f` is a value of type `Mobius`. Then `f(z)` evaluates the transformation at the number `z`. In addition, `f(C)`, where `C` is a Circle or Line, returns the Circle or Line that is the image of `C` under `f`. Similarly, `f(R)`, where `R` is a disk or half-plane, returns the appropriate type of image region. For example,
+
+```{python}
+from cxregions import Mobius, Line, Circle, unitcircle
+f = Mobius(Line(-1, 1), Circle(0, 1))
+f(Line(-1, 1)).isapprox(unitcircle)
+```
+
+Two other methods are defined:
+
+- `inv(f)` Construct the inverse transformation.
+- `f.compose(g)` Construct the composed map, $z \mapsto f(g(z))$.

@@ -262,3 +262,7 @@ docs/_site/site_libs/quarto-search/autocomplete.umd.js
 docs/_site/site_libs/quarto-search/fuse.min.js
 docs/_site/site_libs/quarto-search/quarto-search.js
 objects.json
+docs/_site/paths.html
+docs/_site/polygons.html
+docs/_site/regions.html
+docs/_site/reference/mobius.html

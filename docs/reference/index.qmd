@@ -1,0 +1,12 @@
+# Function reference {.doc .doc-index}
+
+## Modules
+
+Submodules containing core functionality
+
+| | |
+| --- | --- |
+| [curves](curves.qmd#cxregions.curves) | Curve classes for the cxregions package. |
+| [paths](paths.qmd#cxregions.paths) | Path classes for the cxregions package. |
+| [regions](regions.qmd#cxregions.regions) | Region classes for the cxregions package. |
+| [mobius](mobius.qmd#cxregions.mobius) | Möbius transformation class for the cxregions package. |

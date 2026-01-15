@@ -1,0 +1,47 @@
+project:
+  type: website
+  render:
+    - "*.qmd"
+
+website:
+  title: "cxregions"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: reference/index.qmd
+        text: Reference
+  sidebar:
+    search: true
+    contents:
+      - href: index.qmd
+        text: Home
+      - curves.qmd
+      - paths.qmd
+      - polygons.qmd
+      - intersections.qmd
+      - regions.qmd
+      - mobius.qmd
+
+format:
+  html:
+    theme:
+      - spacelab
+    css: styles.css
+    toc: true
+
+quartodoc:
+  style: pkgdown
+  dir: reference
+  package: cxregions
+  sidebar: reference/_sidebar.yml
+  css: reference/_styles-quartodoc.css
+
+  sections:
+    - title: Modules
+      desc: Submodules containing core functionality
+      contents:
+        - curves
+        - paths
+        - regions
+        - mobius
