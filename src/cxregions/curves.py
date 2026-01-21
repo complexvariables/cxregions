@@ -378,9 +378,12 @@ class JuliaCurve:
         JuliaCurve
             Translated curve
         """
-        julia_add = getattr(jl, "+")
-        t = julia_add(self.julia, other)
-        return type(self)(t)
+        try:
+            julia_add = getattr(jl, "+")
+            t = julia_add(self.julia, other)
+            return type(self)(t)
+        except Exception:
+            return NotImplemented
 
     def __radd__(self, other):
         """Add a complex number to the curve (translation).
@@ -395,9 +398,12 @@ class JuliaCurve:
         JuliaCurve
             Translated curve
         """
-        julia_add = getattr(jl, "+")
-        t = julia_add(other, self.julia)
-        return type(self)(t)
+        try:
+            julia_add = getattr(jl, "+")
+            t = julia_add(other, self.julia)
+            return type(self)(t)
+        except Exception:
+            return NotImplemented
 
     def __neg__(self):
         """Negate the curve.
@@ -424,9 +430,12 @@ class JuliaCurve:
         JuliaCurve
             Translated curve
         """
-        julia_sub = getattr(jl, "-")
-        t = julia_sub(self.julia, other)
-        return type(self)(t)
+        try:
+            julia_sub = getattr(jl, "-")
+            t = julia_sub(self.julia, other)
+            return type(self)(t)
+        except Exception:
+            return NotImplemented
 
     def __rsub__(self, other):
         """Subtract the curve from a complex number.
@@ -441,9 +450,12 @@ class JuliaCurve:
         JuliaCurve
             Resulting curve
         """
-        julia_sub = getattr(jl, "-")
-        t = julia_sub(other, self.julia)
-        return type(self)(t)
+        try:
+            julia_sub = getattr(jl, "-")
+            t = julia_sub(other, self.julia)
+            return type(self)(t)
+        except Exception:
+            return NotImplemented
     
     def __mul__(self, other):
         """Multiply the curve by a complex number (scaling and rotation).
@@ -458,9 +470,12 @@ class JuliaCurve:
         JuliaCurve
             Scaled and rotated curve
         """
-        julia_mul = getattr(jl, "*")
-        t = julia_mul(self.julia, other)
-        return type(self)(t)
+        try:
+            julia_mul = getattr(jl, "*")
+            t = julia_mul(self.julia, other)
+            return type(self)(t)
+        except Exception:
+            return NotImplemented
 
     def __rmul__(self, other):
         """Multiply the curve by a complex number (scaling and rotation).
@@ -475,9 +490,12 @@ class JuliaCurve:
         JuliaCurve
             Scaled and rotated curve
         """
-        julia_mul = getattr(jl, "*")
-        t = julia_mul(other, self.julia)
-        return type(self)(t)
+        try:
+            julia_mul = getattr(jl, "*")
+            t = julia_mul(other, self.julia)
+            return type(self)(t)
+        except Exception:
+            return NotImplemented
 
     def __truediv__(self, other):
         """Divide the curve by a complex number (scaling and rotation).
@@ -492,9 +510,12 @@ class JuliaCurve:
         JuliaCurve
             Scaled and rotated curve
         """
-        julia_div = getattr(jl, "/")
-        t = julia_div(self.julia, other)
-        return type(self)(t)
+        try:
+            julia_div = getattr(jl, "/")
+            t = julia_div(self.julia, other)
+            return type(self)(t)
+        except Exception:
+            return NotImplemented
 
     def intersect(self, other):
         """Find intersection points with another curve.
