@@ -11,6 +11,8 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    # Skip if commit is from github-actions bot (version updates)
+    if: github.actor != 'github-actions[bot]'
     strategy:
       fail-fast: false
       matrix:
