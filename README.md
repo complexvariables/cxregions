@@ -1,5 +1,7 @@
 # cxregions
 
+[![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://complexvariables.github.io/cxregions)
+
 This package is a Python interface to the [ComplexRegions.jl](https://github.com/complexvariables/ComplexRegions.jl) Julia package, providing tools for working with complex regions defined by paths and curves. It allows users to create, manipulate, and analyze geometric shapes such as circular polygons and general polygons using Julia's computational capabilities from within Python.
 
 ## Installation
@@ -32,4 +34,4 @@ print(f(0)) # -1.0
 print(f(line1)) # A Circle
 ```
 
-Full documentation and examples can be found in the [ComplexRegions.jl documentation](https://complexvariables.github.io/ComplexRegions.jl/stable/). Most of the Julia methods shown there are members of the corresponding Python classes.
+Please see the[full documentation](https://complexvariables.github.io/cxregions) for more details.

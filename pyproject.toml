@@ -37,6 +37,7 @@ hatch = ">=1.16,<2"
 twine = ">=6.0.0,<7"
 matplotlib = ">=3.10.8,<4"
 jupyter = ">=1.1.1,<2"
+ipython = ">=9.9.0,<10"
 
 [tool.pixi.feature.test.tasks]
 test = "pytest"
