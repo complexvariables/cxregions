@@ -424,7 +424,7 @@ class InteriorConnectedRegion(JuliaRegion):
 
         b = JuliaRegion.get(self, "inner")
         self.inner = [Jordan(j) for j in b]
-        self.outer = JuliaRegion.get(self, "outer")
+        self.outer = Jordan(JuliaRegion.get(self, "outer"))
 
     def isfinite(self):
         """Check if the region is finite.
