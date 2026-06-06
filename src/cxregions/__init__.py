@@ -48,7 +48,7 @@ from .regions import (
 # Define public API
 __all__ = [
     # Julia interface
-    "jl", 
+    "jl", "update",
     
     # Curve classes
     "Curve", "ClosedCurve", "Line", "Segment", "Circle", "Ray", "Arc",
@@ -67,6 +67,24 @@ __all__ = [
     "n_gon", "unitcircle", "unitdisk", "between", "interior", "exterior", "disk", "quad",
     "halfplane", "upperhalfplane", "lowerhalfplane", "lefthalfplane", "righthalfplane"
 ]
+
+def update():
+    """Check for and install updates to ComplexRegions.jl.
+
+    Changes take effect on the next Python session.
+    """
+    before = {v.name: str(v.version) for v in jl.Pkg.dependencies().values()
+              if v.name == "ComplexRegions"}
+    jl.seval('Pkg.update("ComplexRegions")')
+    after = {v.name: str(v.version) for v in jl.Pkg.dependencies().values()
+             if v.name == "ComplexRegions"}
+    old = before.get("ComplexRegions", "unknown")
+    new = after.get("ComplexRegions", "unknown")
+    if old == new:
+        print(f"ComplexRegions.jl is already up to date (v{new}).")
+    else:
+        print(f"ComplexRegions.jl updated from v{old} to v{new}. Restart Python to apply.")
+
 
 # Package metadata
 from importlib.metadata import version as _version, PackageNotFoundError as _PackageNotFoundError
