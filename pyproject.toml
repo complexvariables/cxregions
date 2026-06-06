@@ -27,8 +27,14 @@ platforms = ["osx-arm64"]
 
 [tool.pixi.pypi-dependencies]
 cxregions = { path = ".", editable = true }
+# quartodoc 0.11.1 only requires "griffe>=0.33", but griffe 2.0 split into
+# griffe/griffelib/griffecli and broke quartodoc's import shim. Pin to 1.x.
+griffe = ">=1.5.1,<2"
 
 [tool.pixi.tasks]
+docs-api = { cmd = "quartodoc build", cwd = "docs", description = "Generate the API reference pages from docstrings" }
+docs = { cmd = "quarto render", cwd = "docs", depends-on = ["docs-api"], description = "Build the documentation website" }
+docs-preview = { cmd = "quarto preview", cwd = "docs", depends-on = ["docs-api"], description = "Build and live-preview the documentation website" }
 
 [tool.pixi.dependencies]
 numpy = ">=2.1,<3"
