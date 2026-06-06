@@ -69,7 +69,11 @@ __all__ = [
 ]
 
 # Package metadata
-__version__ = "0.1.4"
+from importlib.metadata import version as _version, PackageNotFoundError as _PackageNotFoundError
+try:
+    __version__ = _version("cxregions")
+except _PackageNotFoundError:
+    __version__ = "unknown"
 __author__ = "Toby Driscoll"
 __email__ = "driscoll@udel.edu"
 __description__ = "A Python interface to the ComplexRegions.jl Julia package"
