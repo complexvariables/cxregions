@@ -2,7 +2,8 @@ import pytest
 import numpy as np
 from cxregions import (
     Circle, Line, Rectangle, Segment, unitcircle,
-    Exterior1CRegion, Interior1CRegion, ExteriorRegion, InteriorConnectedRegion, Annulus,
+    Exterior1CRegion, Interior1CRegion, ExteriorRegion, InteriorRegion,
+    Interior2CRegion, Annulus,
     between, interior, exterior, disk, quad, halfplane, upperhalfplane, lowerhalfplane,
     lefthalfplane, righthalfplane
 )
@@ -187,7 +188,7 @@ class TestRegionBuilders:
 
     def test_between_builder(self, small_circle, large_circle):
         b = between(large_circle, small_circle)
-        assert isinstance(b, InteriorConnectedRegion)
+        assert isinstance(b, Interior2CRegion)
         assert b.contains(1)
         assert not b.contains(0.25)
         assert not b.contains(3)

@@ -25,7 +25,7 @@ and specific region types like Interior1CRegion, Exterior1CRegion, and Annulus.
 | [Exterior1CRegion](#cxregions.regions.Exterior1CRegion) | Simply connected exterior region. |
 | [ExteriorRegion](#cxregions.regions.ExteriorRegion) | Exterior region with multiple inner boundaries. |
 | [Interior1CRegion](#cxregions.regions.Interior1CRegion) | Simply connected interior region. |
-| [InteriorConnectedRegion](#cxregions.regions.InteriorConnectedRegion) | Multiply connected interior region. |
+| [InteriorRegion](#cxregions.regions.InteriorRegion) | Multiply connected interior region. |
 | [JuliaRegion](#cxregions.regions.JuliaRegion) | Base class for wrapping Julia region objects from ComplexRegions.jl. |
 
 ### Annulus { #cxregions.regions.Annulus }
@@ -251,10 +251,10 @@ Check if the region is finite.
 |--------|--------|-------------------------------------------------|
 |        | bool   | True if the boundary is finite, False otherwise |
 
-### InteriorConnectedRegion { #cxregions.regions.InteriorConnectedRegion }
+### InteriorRegion { #cxregions.regions.InteriorRegion }
 
 ```python
-regions.InteriorConnectedRegion(outer, inner=[])
+regions.InteriorRegion(outer, inner=[])
 ```
 
 Multiply connected interior region.
@@ -281,19 +281,19 @@ This represents the region inside an outer boundary but outside inner boundaries
 >>> from cxregions.curves import Circle
 >>> outer_circle = Circle(0, 2)
 >>> inner_circle = Circle(0, 1)
->>> region = InteriorConnectedRegion(outer_circle, [inner_circle])
+>>> region = InteriorRegion(outer_circle, [inner_circle])
 ```
 
 #### Methods
 
 | Name | Description |
 | --- | --- |
-| [isfinite](#cxregions.regions.InteriorConnectedRegion.isfinite) | Check if the region is finite. |
+| [isfinite](#cxregions.regions.InteriorRegion.isfinite) | Check if the region is finite. |
 
-##### isfinite { #cxregions.regions.InteriorConnectedRegion.isfinite }
+##### isfinite { #cxregions.regions.InteriorRegion.isfinite }
 
 ```python
-regions.InteriorConnectedRegion.isfinite()
+regions.InteriorRegion.isfinite()
 ```
 
 Check if the region is finite.
@@ -504,7 +504,7 @@ Construct the region between two closed curves.
 
 | Name   | Type                    | Description                   |
 |--------|-------------------------|-------------------------------|
-|        | InteriorConnectedRegion | Region between the two curves |
+|        | InteriorRegion | Region between the two curves |
 
 #### Examples {.doc-section .doc-section-examples}
 

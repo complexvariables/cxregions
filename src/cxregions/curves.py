@@ -365,6 +365,22 @@ class JuliaCurve:
         """
         return JLCR.dist(z, self.julia)
     
+    def discretize(self, n):
+        """Discretize the curve into n points.
+        
+        Parameters
+        ----------
+        n : int
+            Number of points to discretize into
+            
+        Returns
+        -------
+        tuple of numpy.ndarray
+            Arrays of parameter values and the discretized points
+        """
+        pts = JLCR.discretize(self.julia, n)
+        return np.array(pts[0]), np.array(pts[1])
+    
     def __add__(self, other):
         """Add a complex number to the curve (translation).
         

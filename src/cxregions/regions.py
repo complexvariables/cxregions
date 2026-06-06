@@ -41,8 +41,10 @@ def wrap_jl_region(jul):
             return Interior1CRegion(jul)
         elif jl.isa(jul, JLCR.ExteriorRegion):
             return ExteriorRegion(jul)
-        elif jl.isa(jul, JLCR.InteriorConnectedRegion):
-            return InteriorConnectedRegion(jul)
+        elif jl.isa(jul, JLCR.InteriorDoublyConnectedRegion):
+            return Interior2CRegion(jul)
+        elif jl.isa(jul, JLCR.InteriorRegion):
+            return InteriorRegion(jul)
         else:
             raise ValueError(f"Julia type {jl.typeof(jul)} not recognized for wrapping")
     else:
@@ -364,7 +366,7 @@ class Interior1CRegion(JuliaRegion):
             if jl.isa(boundary, JLCR.InteriorSimplyConnectedRegion) :
                 self.julia = boundary
             else:
-                raise ValueError("Invalid argument to InteriorConnectedRegion constructor")
+                raise ValueError("Invalid argument to Interior1CRegion constructor")
         else:
             self.julia = JLCR.InteriorSimplyConnectedRegion(boundary.julia)
 
@@ -384,43 +386,43 @@ class Interior1CRegion(JuliaRegion):
         return str(f"Interior simply connected region")
 
 
-class InteriorConnectedRegion(JuliaRegion):
+class InteriorRegion(JuliaRegion):
     """Multiply connected interior region.
-    
+
     This represents the region inside an outer boundary but outside inner boundaries.
-    
+
     Parameters
     ----------
     outer : ClosedCurve, ClosedPath, or juliacall.AnyValue
         The outer boundary curve
     inner : list of ClosedCurve/ClosedPath, optional
         The inner boundary curves (holes)
-        
+
     Attributes
     ----------
     outer : ClosedCurve or ClosedPath
         The outer boundary curve
     inner : list of ClosedCurve/ClosedPath
         The inner boundary curves
-        
+
     Examples
     --------
     >>> from cxregions.curves import Circle
     >>> outer_circle = Circle(0, 2)
     >>> inner_circle = Circle(0, 1)
-    >>> region = InteriorConnectedRegion(outer_circle, [inner_circle])
+    >>> region = InteriorRegion(outer_circle, [inner_circle])
     """
-    
+
     def __init__(self, outer, inner=[]):
         if isinstance(outer, juliacall.AnyValue):  # type: ignore
-            if jl.isa(outer, JLCR.InteriorConnectedRegion) :
+            if jl.isa(outer, JLCR.InteriorRegion) :
                 self.julia = outer
             else:
-                raise ValueError("Invalid argument to InteriorConnectedRegion constructor")
+                raise ValueError("Invalid argument to InteriorRegion constructor")
         else:
             innerb = juliacall.convert(jl.Vector, [get_julia(b) for b in inner])
             outerb = get_julia(outer)
-            self.julia = JLCR.InteriorConnectedRegion(outerb, innerb)
+            self.julia = JLCR.InteriorRegion(outerb, innerb)
 
         b = JuliaRegion.get(self, "inner")
         self.inner = [Jordan(j) for j in b]
@@ -441,7 +443,61 @@ class InteriorConnectedRegion(JuliaRegion):
         return f"Interior {N+1}-connnected region"
 
 
-class Annulus(InteriorConnectedRegion):
+class Interior2CRegion(JuliaRegion):
+    """Doubly connected interior region.
+
+    This represents the region interior to an outer boundary and exterior to a
+    single inner boundary, as returned by :func:`between`.
+
+    Parameters
+    ----------
+    outer : ClosedCurve, ClosedPath, or juliacall.AnyValue
+        The outer boundary curve, or a Julia InteriorDoublyConnectedRegion object
+    inner : ClosedCurve or ClosedPath, optional
+        The inner boundary curve (hole)
+
+    Attributes
+    ----------
+    outer : ClosedCurve or ClosedPath
+        The outer boundary curve
+    inner : ClosedCurve or ClosedPath
+        The inner boundary curve
+
+    Examples
+    --------
+    >>> from cxregions.curves import Circle
+    >>> outer_circle = Circle(0, 2)
+    >>> inner_circle = Circle(0, 1)
+    >>> region = Interior2CRegion(outer_circle, inner_circle)
+    """
+
+    def __init__(self, outer, inner=None):
+        if isinstance(outer, juliacall.AnyValue):  # type: ignore
+            if jl.isa(outer, JLCR.InteriorDoublyConnectedRegion) :
+                self.julia = outer
+            else:
+                raise ValueError("Invalid argument to Interior2CRegion constructor")
+        else:
+            self.julia = JLCR.between(get_julia(outer), get_julia(inner))
+
+        self.outer = Jordan(JuliaRegion.get(self, "outer"))
+        self.inner = Jordan(JuliaRegion.get(self, "inner"))
+
+    def isfinite(self):
+        """Check if the region is finite.
+
+        Returns
+        -------
+        bool
+            True if both boundaries are finite, False otherwise
+        """
+        return self.outer.isfinite() & self.inner.isfinite()
+
+    def __repr__(self):
+        return f"Interior doubly connected region"
+
+
+class Annulus(InteriorRegion):
     """An annulus (ring-shaped region) between two circles.
     
     This represents the region between an inner and outer circle.
@@ -528,9 +584,9 @@ def between(curve1, curve2):
         
     Returns
     -------
-    InteriorConnectedRegion
+    Interior2CRegion
         Region between the two curves
-        
+
     Examples
     --------
     >>> from cxregions.curves import Circle
@@ -539,7 +595,7 @@ def between(curve1, curve2):
     >>> region = between(outer, inner)
     """
     r = JLCR.between(curve1.julia, curve2.julia)
-    return InteriorConnectedRegion(r)
+    return Interior2CRegion(r)
 
 
 def interior(curve):

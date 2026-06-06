@@ -50,7 +50,7 @@ The package uses [`juliacall`](https://github.com/JuliaPy/PythonCall.jl) to inte
 - **Types**:
   - [`Interior1CRegion`](src/cxregions/__init__.py:744): Simply connected interior regions
   - [`Exterior1CRegion`](src/cxregions/__init__.py:706): Simply connected exterior regions
-  - [`InteriorConnectedRegion`](src/cxregions/__init__.py:762): Multiply connected interior regions
+  - [`InteriorRegion`](src/cxregions/__init__.py:762): Multiply connected interior regions
   - [`ExteriorRegion`](src/cxregions/__init__.py:724): Exterior regions with multiple boundaries
   - [`Annulus`](src/cxregions/__init__.py:819): Ring-shaped regions between two circles
 

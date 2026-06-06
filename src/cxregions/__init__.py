@@ -39,8 +39,8 @@ from .paths import (
 )
 
 from .regions import (
-    JuliaRegion, Exterior1CRegion, Interior1CRegion, ExteriorRegion, 
-    InteriorConnectedRegion, Annulus, wrap_jl_region, Jordan, get_julia,
+    JuliaRegion, Exterior1CRegion, Interior1CRegion, ExteriorRegion,
+    InteriorRegion, Interior2CRegion, Annulus, wrap_jl_region, Jordan, get_julia,
     between, interior, exterior, disk, unitdisk, halfplane,
     upperhalfplane, lowerhalfplane, lefthalfplane, righthalfplane
 )
@@ -60,8 +60,8 @@ __all__ = [
     "Mobius",
 
     # Region classes
-    "Exterior1CRegion", "Interior1CRegion", "ExteriorRegion", "InteriorConnectedRegion",
-    "Annulus",
+    "Exterior1CRegion", "Interior1CRegion", "ExteriorRegion", "InteriorRegion",
+    "Interior2CRegion", "Annulus",
     
     # Utilities
     "n_gon", "unitcircle", "unitdisk", "between", "interior", "exterior", "disk", "quad",

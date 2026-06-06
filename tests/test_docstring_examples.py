@@ -15,8 +15,8 @@ from cxregions.paths import (
     Path, ClosedPath, CircularPolygon, Polygon, Rectangle, n_gon, quad
 )
 from cxregions.regions import (
-    Exterior1CRegion, ExteriorRegion, Interior1CRegion, InteriorConnectedRegion,
-    Annulus, between, interior, exterior, disk, halfplane
+    Exterior1CRegion, ExteriorRegion, Interior1CRegion, InteriorRegion,
+    Interior2CRegion, Annulus, between, interior, exterior, disk, halfplane
 )
 
 
@@ -224,13 +224,12 @@ class TestRegionExamples:
         assert isinstance(interior, Interior1CRegion)
         assert interior.isfinite()
     
-     # TODO: test fails until ComplexRegions.jl is updated
-    # def test_interior_connected_region_example(self):
-    #     """Test InteriorConnectedRegion docstring example."""
-    #     outer_circle = Circle(0, 2)
-    #     inner_circle = Circle(0, 1)
-    #     region = InteriorConnectedRegion(outer_circle, np.array([inner_circle]))
-    #     assert isinstance(region, InteriorConnectedRegion)
+    def test_interior_region_example(self):
+        """Test InteriorRegion docstring example."""
+        outer_circle = Circle(0, 2)
+        inner_circle = Circle(0, 1)
+        region = InteriorRegion(outer_circle, np.array([inner_circle]))
+        assert isinstance(region, InteriorRegion)
     
     def test_annulus_examples(self):
         """Test Annulus docstring examples."""
@@ -254,8 +253,8 @@ class TestRegionExamples:
         outer = Circle(0, 2)
         inner = Circle(0, 1)
         region = between(outer, inner)
-        
-        assert isinstance(region, InteriorConnectedRegion)
+
+        assert isinstance(region, Interior2CRegion)
     
     def test_interior_example(self):
         """Test interior docstring example."""

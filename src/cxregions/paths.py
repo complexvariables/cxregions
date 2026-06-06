@@ -199,6 +199,22 @@ class JuliaPath:
         """
         return self.point(t)
 
+    def discretize(self, n):
+        """Discretize the curve into n points.
+        
+        Parameters
+        ----------
+        n : int
+            Number of points to discretize into
+            
+        Returns
+        -------
+        tuple of numpy.ndarray
+            Arrays of parameter values and the discretized points
+        """
+        pts = JLCR.discretize(self.julia, n)
+        return np.array(pts[0]), np.array(pts[1])
+
     def arclength(self):
         """Compute the total arc length of the path.
         
