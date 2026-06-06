@@ -2,13 +2,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.8.26">
+<meta name="generator" content="quarto-1.9.38">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
 <title>paths – cxregions</title>
 <style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
 div.columns{display: flex; gap: min(4vw, 1.5em);}
@@ -67,15 +70,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta name="quarto:offset" content="../">
 <script src="../site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
-<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-003c7ce323138a8a6468cb23c965a473.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-8ce484d92116c4accc59257505a5c3a2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -695,70 +697,74 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>Get all curves that make up the path.</td>
 </tr>
 <tr class="even">
+<td><a href="#cxregions.paths.JuliaPath.discretize">discretize</a></td>
+<td>Discretize the curve into n points.</td>
+</tr>
+<tr class="odd">
 <td><a href="#cxregions.paths.JuliaPath.dist">dist</a></td>
 <td>Compute the distance from point z to the path.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="#cxregions.paths.JuliaPath.get">get</a></td>
 <td>Get a field from the underlying Julia object.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="#cxregions.paths.JuliaPath.intersect">intersect</a></td>
 <td>Find intersection points with another path.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="#cxregions.paths.JuliaPath.inv">inv</a></td>
 <td>Compute the inversion of the path with respect to the unit circle.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="#cxregions.paths.JuliaPath.isapprox">isapprox</a></td>
 <td>Check if this path is approximately equal to another.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="#cxregions.paths.JuliaPath.isfinite">isfinite</a></td>
 <td>Check if the path has finite length.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="#cxregions.paths.JuliaPath.ispositive">ispositive</a></td>
 <td>Check if the path has positive orientation.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="#cxregions.paths.JuliaPath.isreal">isreal</a></td>
 <td>Check if the path lies on the real axis.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="#cxregions.paths.JuliaPath.length">length</a></td>
 <td>Get the number of curves in the path.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="#cxregions.paths.JuliaPath.normal">normal</a></td>
 <td>Compute the normal vector at parameter t.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="#cxregions.paths.JuliaPath.point">point</a></td>
 <td>Evaluate the path at parameter value t.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="#cxregions.paths.JuliaPath.reflect">reflect</a></td>
 <td>Reflect point z across the path.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="#cxregions.paths.JuliaPath.reverse">reverse</a></td>
 <td>Return the path with reversed orientation.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="#cxregions.paths.JuliaPath.tangent">tangent</a></td>
 <td>Compute the tangent vector at parameter t.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="#cxregions.paths.JuliaPath.unittangent">unittangent</a></td>
 <td>Compute the unit tangent vector at parameter t.</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><a href="#cxregions.paths.JuliaPath.vertex">vertex</a></td>
 <td>Get the k-th vertex of the path.</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><a href="#cxregions.paths.JuliaPath.vertices">vertices</a></td>
 <td>Get all vertices of the path.</td>
 </tr>
@@ -1005,12 +1011,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 </section>
 </section>
-<section id="cxregions.paths.JuliaPath.dist" class="level5">
-<h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.dist">dist</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.dist(z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Compute the distance from point z to the path.</p>
+<section id="cxregions.paths.JuliaPath.discretize" class="level5">
+<h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.discretize">discretize</h5>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.discretize(n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Discretize the curve into n points.</p>
 <section id="parameters-9" class="level6 doc-section doc-section-parameters">
 <h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-9">Parameters</h6>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>n</td>
+<td>int</td>
+<td>Number of points to discretize into</td>
+<td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="returns-11" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-11">Returns</h6>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 9%">
+<col style="width: 27%">
+<col style="width: 63%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>tuple of numpy.ndarray</td>
+<td>Arrays of parameter values and the discretized points</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cxregions.paths.JuliaPath.dist" class="level5">
+<h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.dist">dist</h5>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.dist(z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Compute the distance from point z to the path.</p>
+<section id="parameters-10" class="level6 doc-section doc-section-parameters">
+<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-10">Parameters</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1030,8 +1086,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns-11" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-11">Returns</h6>
+<section id="returns-12" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-12">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1052,10 +1108,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.get" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.get">get</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.get(field)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.get(field)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Get a field from the underlying Julia object.</p>
-<section id="parameters-10" class="level6 doc-section doc-section-parameters">
-<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-10">Parameters</h6>
+<section id="parameters-11" class="level6 doc-section doc-section-parameters">
+<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-11">Parameters</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1075,8 +1131,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns-12" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-12">Returns</h6>
+<section id="returns-13" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-13">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1097,10 +1153,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.intersect" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.intersect">intersect</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.intersect(other)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.intersect(other)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Find intersection points with another path.</p>
-<section id="parameters-11" class="level6 doc-section doc-section-parameters">
-<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-11">Parameters</h6>
+<section id="parameters-12" class="level6 doc-section doc-section-parameters">
+<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-12">Parameters</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1120,8 +1176,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns-13" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-13">Returns</h6>
+<section id="returns-14" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-14">Returns</h6>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 10%">
@@ -1147,10 +1203,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.inv" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.inv">inv</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.inv()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.inv()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Compute the inversion of the path with respect to the unit circle.</p>
-<section id="returns-14" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-14">Returns</h6>
+<section id="returns-15" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-15">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1171,10 +1227,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.isapprox" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.isapprox">isapprox</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.isapprox(other)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.isapprox(other)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Check if this path is approximately equal to another.</p>
-<section id="parameters-12" class="level6 doc-section doc-section-parameters">
-<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-12">Parameters</h6>
+<section id="parameters-13" class="level6 doc-section doc-section-parameters">
+<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-13">Parameters</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1194,8 +1250,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns-15" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-15">Returns</h6>
+<section id="returns-16" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-16">Returns</h6>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 11%">
@@ -1221,10 +1277,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.isfinite" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.isfinite">isfinite</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.isfinite()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.isfinite()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Check if the path has finite length.</p>
-<section id="returns-16" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-16">Returns</h6>
+<section id="returns-17" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-17">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1245,10 +1301,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.ispositive" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.ispositive">ispositive</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.ispositive()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.ispositive()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Check if the path has positive orientation.</p>
-<section id="returns-17" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-17">Returns</h6>
+<section id="returns-18" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-18">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1269,10 +1325,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.isreal" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.isreal">isreal</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.isreal()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.isreal()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Check if the path lies on the real axis.</p>
-<section id="returns-18" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-18">Returns</h6>
+<section id="returns-19" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-19">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1293,10 +1349,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.length" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.length">length</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.length()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.length()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Get the number of curves in the path.</p>
-<section id="returns-19" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-19">Returns</h6>
+<section id="returns-20" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-20">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1317,10 +1373,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.normal" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.normal">normal</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.normal(t<span class="op">=</span><span class="fl">0.0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.normal(t<span class="op">=</span><span class="fl">0.0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Compute the normal vector at parameter t.</p>
-<section id="parameters-13" class="level6 doc-section doc-section-parameters">
-<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-13">Parameters</h6>
+<section id="parameters-14" class="level6 doc-section doc-section-parameters">
+<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-14">Parameters</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1340,8 +1396,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns-20" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-20">Returns</h6>
+<section id="returns-21" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-21">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1362,10 +1418,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.point" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.point">point</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.point(t)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.point(t)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Evaluate the path at parameter value t.</p>
-<section id="parameters-14" class="level6 doc-section doc-section-parameters">
-<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-14">Parameters</h6>
+<section id="parameters-15" class="level6 doc-section doc-section-parameters">
+<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-15">Parameters</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1385,8 +1441,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns-21" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-21">Returns</h6>
+<section id="returns-22" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-22">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1407,10 +1463,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.reflect" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.reflect">reflect</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.reflect(z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.reflect(z)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Reflect point z across the path.</p>
-<section id="parameters-15" class="level6 doc-section doc-section-parameters">
-<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-15">Parameters</h6>
+<section id="parameters-16" class="level6 doc-section doc-section-parameters">
+<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-16">Parameters</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1430,8 +1486,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns-22" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-22">Returns</h6>
+<section id="returns-23" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-23">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1452,10 +1508,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.reverse" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.reverse">reverse</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.reverse()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.reverse()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Return the path with reversed orientation.</p>
-<section id="returns-23" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-23">Returns</h6>
+<section id="returns-24" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-24">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1476,53 +1532,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.tangent" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.tangent">tangent</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.tangent(t<span class="op">=</span><span class="fl">0.0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.tangent(t<span class="op">=</span><span class="fl">0.0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Compute the tangent vector at parameter t.</p>
-<section id="parameters-16" class="level6 doc-section doc-section-parameters">
-<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-16">Parameters</h6>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>t</td>
-<td>float</td>
-<td>Parameter value, default is 0</td>
-<td><code>0.0</code></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="returns-24" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-24">Returns</h6>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>complex</td>
-<td>Tangent vector at parameter t</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="cxregions.paths.JuliaPath.unittangent" class="level5">
-<h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.unittangent">unittangent</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.unittangent(t<span class="op">=</span><span class="fl">0.0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Compute the unit tangent vector at parameter t.</p>
 <section id="parameters-17" class="level6 doc-section doc-section-parameters">
 <h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-17">Parameters</h6>
 <table class="caption-top table">
@@ -1558,6 +1569,51 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="odd">
 <td></td>
 <td>complex</td>
+<td>Tangent vector at parameter t</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="cxregions.paths.JuliaPath.unittangent" class="level5">
+<h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.unittangent">unittangent</h5>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.unittangent(t<span class="op">=</span><span class="fl">0.0</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Compute the unit tangent vector at parameter t.</p>
+<section id="parameters-18" class="level6 doc-section doc-section-parameters">
+<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-18">Parameters</h6>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+<th>Default</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>t</td>
+<td>float</td>
+<td>Parameter value, default is 0</td>
+<td><code>0.0</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="returns-26" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-26">Returns</h6>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>complex</td>
 <td>Unit tangent vector at parameter t</td>
 </tr>
 </tbody>
@@ -1566,10 +1622,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.vertex" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.vertex">vertex</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.vertex(k)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.vertex(k)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Get the k-th vertex of the path.</p>
-<section id="parameters-18" class="level6 doc-section doc-section-parameters">
-<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-18">Parameters</h6>
+<section id="parameters-19" class="level6 doc-section doc-section-parameters">
+<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-19">Parameters</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1589,8 +1645,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns-26" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-26">Returns</h6>
+<section id="returns-27" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-27">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1611,10 +1667,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.JuliaPath.vertices" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.JuliaPath.vertices">vertices</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.vertices()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>paths.JuliaPath.vertices()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Get all vertices of the path.</p>
-<section id="returns-27" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-27">Returns</h6>
+<section id="returns-28" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-28">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1637,11 +1693,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.Path" class="level3">
 <h3 class="anchored" data-anchor-id="cxregions.paths.Path">Path</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>paths.Path(curves)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>paths.Path(curves)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A path composed of connected curves.</p>
 <p>This class represents a sequence of curves that form a continuous path.</p>
-<section id="parameters-19" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-19">Parameters</h4>
+<section id="parameters-20" class="level4 doc-section doc-section-parameters">
+<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-20">Parameters</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
@@ -1669,19 +1725,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="examples-2" class="level4 doc-section doc-section-examples">
 <h4 class="doc-section doc-section-examples anchored" data-anchor-id="examples-2">Examples</h4>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> cxregions.curves <span class="im">import</span> Segment</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> seg1 <span class="op">=</span> Segment(<span class="dv">0</span>, <span class="dv">1</span>)</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> seg2 <span class="op">=</span> Segment(<span class="dv">1</span>, <span class="dv">1</span><span class="op">+</span><span class="ot">1j</span>)</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> path <span class="op">=</span> Path([seg1, seg2])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="im">from</span> cxregions.curves <span class="im">import</span> Segment</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> seg1 <span class="op">=</span> Segment(<span class="dv">0</span>, <span class="dv">1</span>)</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> seg2 <span class="op">=</span> Segment(<span class="dv">1</span>, <span class="dv">1</span><span class="op">+</span><span class="ot">1j</span>)</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> path <span class="op">=</span> Path([seg1, seg2])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="cxregions.paths.Polygon" class="level3">
 <h3 class="anchored" data-anchor-id="cxregions.paths.Polygon">Polygon</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>paths.Polygon(arg)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>paths.Polygon(arg)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A polygon with straight sides.</p>
 <p>This class represents a polygon where all sides are straight line segments.</p>
-<section id="parameters-20" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-20">Parameters</h4>
+<section id="parameters-21" class="level4 doc-section doc-section-parameters">
+<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-21">Parameters</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
@@ -1728,10 +1784,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="examples-3" class="level4 doc-section doc-section-examples">
 <h4 class="doc-section doc-section-examples anchored" data-anchor-id="examples-3">Examples</h4>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># Unit square</span></span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> poly <span class="op">=</span> Polygon([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span><span class="op">+</span><span class="ot">1j</span>, <span class="ot">1j</span>])</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># More complex polygon</span></span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> poly2 <span class="op">=</span> Polygon([<span class="dv">4</span>, <span class="dv">4</span> <span class="op">+</span> <span class="ot">3j</span>, <span class="ot">3j</span>, <span class="op">-</span><span class="ot">2j</span>, <span class="dv">6</span> <span class="op">-</span> <span class="ot">2j</span>, <span class="dv">6</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># Unit square</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> poly <span class="op">=</span> Polygon([<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span><span class="op">+</span><span class="ot">1j</span>, <span class="ot">1j</span>])</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># More complex polygon</span></span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> poly2 <span class="op">=</span> Polygon([<span class="dv">4</span>, <span class="dv">4</span> <span class="op">+</span> <span class="ot">3j</span>, <span class="ot">3j</span>, <span class="op">-</span><span class="ot">2j</span>, <span class="dv">6</span> <span class="op">-</span> <span class="ot">2j</span>, <span class="dv">6</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="methods-3" class="level4">
 <h4 class="anchored" data-anchor-id="methods-3">Methods</h4>
@@ -1755,10 +1811,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <section id="cxregions.paths.Polygon.side" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.Polygon.side">side</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>paths.Polygon.side(k)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>paths.Polygon.side(k)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Get the k-th side of the polygon.</p>
-<section id="parameters-21" class="level6 doc-section doc-section-parameters">
-<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-21">Parameters</h6>
+<section id="parameters-22" class="level6 doc-section doc-section-parameters">
+<h6 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-22">Parameters</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1778,8 +1834,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns-28" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-28">Returns</h6>
+<section id="returns-29" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-29">Returns</h6>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -1800,10 +1856,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.Polygon.sides" class="level5">
 <h5 class="anchored" data-anchor-id="cxregions.paths.Polygon.sides">sides</h5>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>paths.Polygon.sides()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>paths.Polygon.sides()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Get all sides of the polygon.</p>
-<section id="returns-29" class="level6 doc-section doc-section-returns">
-<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-29">Returns</h6>
+<section id="returns-30" class="level6 doc-section doc-section-returns">
+<h6 class="doc-section doc-section-returns anchored" data-anchor-id="returns-30">Returns</h6>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 10%">
@@ -1831,11 +1887,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.Rectangle" class="level3">
 <h3 class="anchored" data-anchor-id="cxregions.paths.Rectangle">Rectangle</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>paths.Rectangle(a, b<span class="op">=</span><span class="va">None</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>paths.Rectangle(a, b<span class="op">=</span><span class="va">None</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>A rectangular polygon.</p>
 <p>This class represents a rectangle, which is a special case of a polygon with four sides at right angles.</p>
-<section id="parameters-22" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-22">Parameters</h4>
+<section id="parameters-23" class="level4 doc-section doc-section-parameters">
+<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-23">Parameters</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 6%">
@@ -1903,10 +1959,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="examples-4" class="level4 doc-section doc-section-examples">
 <h4 class="doc-section doc-section-examples anchored" data-anchor-id="examples-4">Examples</h4>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># Rectangle from center and radii</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> rect1 <span class="op">=</span> Rectangle(<span class="dv">0</span><span class="op">+</span><span class="ot">0j</span>, np.array([<span class="fl">1.0</span>, <span class="fl">0.5</span>]))</span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># Rectangle from opposite corners</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> rect2 <span class="op">=</span> Rectangle(<span class="op">-</span><span class="dv">1</span><span class="op">-</span><span class="ot">1j</span>, <span class="dv">1</span><span class="op">+</span><span class="ot">1j</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># Rectangle from center and radii</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> rect1 <span class="op">=</span> Rectangle(<span class="dv">0</span><span class="op">+</span><span class="ot">0j</span>, np.array([<span class="fl">1.0</span>, <span class="fl">0.5</span>]))</span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># Rectangle from opposite corners</span></span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> rect2 <span class="op">=</span> Rectangle(<span class="op">-</span><span class="dv">1</span><span class="op">-</span><span class="ot">1j</span>, <span class="dv">1</span><span class="op">+</span><span class="ot">1j</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 </section>
@@ -1940,10 +1996,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </table>
 <section id="cxregions.paths.get_julia" class="level3">
 <h3 class="anchored" data-anchor-id="cxregions.paths.get_julia">get_julia</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>paths.get_julia(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>paths.get_julia(p)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Extract the Julia object from a Python wrapper.</p>
-<section id="parameters-23" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-23">Parameters</h4>
+<section id="parameters-24" class="level4 doc-section doc-section-parameters">
+<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-24">Parameters</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 8%">
@@ -1969,8 +2025,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns-30" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-30">Returns</h4>
+<section id="returns-31" class="level4 doc-section doc-section-returns">
+<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-31">Returns</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 8%">
@@ -1996,10 +2052,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="cxregions.paths.n_gon" class="level3">
 <h3 class="anchored" data-anchor-id="cxregions.paths.n_gon">n_gon</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>paths.n_gon(n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>paths.n_gon(n)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Construct a regular n-gon as a Polygon object.</p>
-<section id="parameters-24" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-24">Parameters</h4>
+<section id="parameters-25" class="level4 doc-section doc-section-parameters">
+<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-25">Parameters</h4>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -2019,8 +2075,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns-31" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-31">Returns</h4>
+<section id="returns-32" class="level4 doc-section doc-section-returns">
+<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-32">Returns</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
@@ -2045,18 +2101,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="examples-5" class="level4 doc-section doc-section-examples">
 <h4 class="doc-section doc-section-examples anchored" data-anchor-id="examples-5">Examples</h4>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># Regular hexagon</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> hex_poly <span class="op">=</span> n_gon(<span class="dv">6</span>)</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># Regular triangle</span></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> triangle <span class="op">=</span> n_gon(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># Regular hexagon</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> hex_poly <span class="op">=</span> n_gon(<span class="dv">6</span>)</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> <span class="co"># Regular triangle</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> triangle <span class="op">=</span> n_gon(<span class="dv">3</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="cxregions.paths.quad" class="level3">
 <h3 class="anchored" data-anchor-id="cxregions.paths.quad">quad</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>paths.quad(rect)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>paths.quad(rect)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Construct a quadrilateral region from a Rectangle.</p>
-<section id="parameters-25" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-25">Parameters</h4>
+<section id="parameters-26" class="level4 doc-section doc-section-parameters">
+<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-26">Parameters</h4>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -2076,8 +2132,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns-32" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-32">Returns</h4>
+<section id="returns-33" class="level4 doc-section doc-section-returns">
+<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-33">Returns</h4>
 <table class="caption-top table">
 <thead>
 <tr class="header">
@@ -2097,16 +2153,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="examples-6" class="level4 doc-section doc-section-examples">
 <h4 class="doc-section doc-section-examples anchored" data-anchor-id="examples-6">Examples</h4>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> rect <span class="op">=</span> Rectangle(<span class="dv">0</span><span class="op">+</span><span class="ot">0j</span>, np.array([<span class="fl">1.0</span>, <span class="fl">0.5</span>]))</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> region <span class="op">=</span> quad(rect)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> rect <span class="op">=</span> Rectangle(<span class="dv">0</span><span class="op">+</span><span class="ot">0j</span>, np.array([<span class="fl">1.0</span>, <span class="fl">0.5</span>]))</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;&gt;&gt;</span> region <span class="op">=</span> quad(rect)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
 <section id="cxregions.paths.wrap_jl_path" class="level3">
 <h3 class="anchored" data-anchor-id="cxregions.paths.wrap_jl_path">wrap_jl_path</h3>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>paths.wrap_jl_path(jul)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb48"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>paths.wrap_jl_path(jul)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Wrap a Julia path object in the appropriate Python class.</p>
-<section id="parameters-26" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-26">Parameters</h4>
+<section id="parameters-27" class="level4 doc-section doc-section-parameters">
+<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-27">Parameters</h4>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 9%">
@@ -2132,8 +2188,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </tbody>
 </table>
 </section>
-<section id="returns-33" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-33">Returns</h4>
+<section id="returns-34" class="level4 doc-section doc-section-returns">
+<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-34">Returns</h4>
 <table class="caption-top table">
 <thead>
 <tr class="header">
