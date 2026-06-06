@@ -323,6 +323,7 @@ geometric operations on curves.
 | [arg](#cxregions.curves.JuliaCurve.arg) | Find the parameter value corresponding to point z on the curve. |
 | [closest](#cxregions.curves.JuliaCurve.closest) | Find the closest point on the curve to z. |
 | [conj](#cxregions.curves.JuliaCurve.conj) | Return the complex conjugate of the curve. |
+| [discretize](#cxregions.curves.JuliaCurve.discretize) | Discretize the curve into n points. |
 | [dist](#cxregions.curves.JuliaCurve.dist) | Compute the distance from point z to the curve. |
 | [get](#cxregions.curves.JuliaCurve.get) | Get a field from the underlying Julia object. |
 | [intersect](#cxregions.curves.JuliaCurve.intersect) | Find intersection points with another curve. |
@@ -407,6 +408,26 @@ Return the complex conjugate of the curve.
 | Name   | Type       | Description                     |
 |--------|------------|---------------------------------|
 |        | JuliaCurve | Complex conjugate of this curve |
+
+##### discretize { #cxregions.curves.JuliaCurve.discretize }
+
+```python
+curves.JuliaCurve.discretize(n)
+```
+
+Discretize the curve into n points.
+
+###### Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type   | Description                         | Default    |
+|--------|--------|-------------------------------------|------------|
+| n      | int    | Number of points to discretize into | _required_ |
+
+###### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type                   | Description                                           |
+|--------|------------------------|-------------------------------------------------------|
+|        | tuple of numpy.ndarray | Arrays of parameter values and the discretized points |
 
 ##### dist { #cxregions.curves.JuliaCurve.dist }
 

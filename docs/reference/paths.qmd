@@ -202,6 +202,7 @@ sequences of connected curves forming a continuous path.
 | [conj](#cxregions.paths.JuliaPath.conj) | Return the complex conjugate of the path. |
 | [curve](#cxregions.paths.JuliaPath.curve) | Get the k-th curve in the path. |
 | [curves](#cxregions.paths.JuliaPath.curves) | Get all curves that make up the path. |
+| [discretize](#cxregions.paths.JuliaPath.discretize) | Discretize the curve into n points. |
 | [dist](#cxregions.paths.JuliaPath.dist) | Compute the distance from point z to the path. |
 | [get](#cxregions.paths.JuliaPath.get) | Get a field from the underlying Julia object. |
 | [intersect](#cxregions.paths.JuliaPath.intersect) | Find intersection points with another path. |
@@ -335,6 +336,26 @@ Get all curves that make up the path.
 | Name   | Type               | Description                              |
 |--------|--------------------|------------------------------------------|
 |        | list of JuliaCurve | List of curve objects that form the path |
+
+##### discretize { #cxregions.paths.JuliaPath.discretize }
+
+```python
+paths.JuliaPath.discretize(n)
+```
+
+Discretize the curve into n points.
+
+###### Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type   | Description                         | Default    |
+|--------|--------|-------------------------------------|------------|
+| n      | int    | Number of points to discretize into | _required_ |
+
+###### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type                   | Description                                           |
+|--------|------------------------|-------------------------------------------------------|
+|        | tuple of numpy.ndarray | Arrays of parameter values and the discretized points |
 
 ##### dist { #cxregions.paths.JuliaPath.dist }
 
